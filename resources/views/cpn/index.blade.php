@@ -5,13 +5,13 @@
 <head>
 <title>Nhập vào file excel</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="{{asset('cpn/my/styles/cpn.css')}}">
+<link rel="stylesheet" href="{{asset('public/cpn/my/styles/cpn.css')}}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="{{asset('cpn/library/bootbox/bootbox.min.js')}}"></script>
-<script src="{{asset('cpn/library/excel/jszip.js')}}"></script>
-<script src="{{asset('cpn/library/excel/xlsx.js')}}"></script>
+<script src="{{asset('public/cpn/library/bootbox/bootbox.min.js')}}"></script>
+<script src="{{asset('public/cpn/library/excel/jszip.js')}}"></script>
+<script src="{{asset('public/cpn/library/excel/xlsx.js')}}"></script>
 </head>
 <body>
 
@@ -20,7 +20,7 @@
 
             <ul class="nav col">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#"> <img id="logo" src="{{asset('cpn/images/logo.png')}}" alt="Logo
+                    <a class="nav-link active" href="#"> <img id="logo" src="{{asset('public/cpn/images/logo.png')}}" alt="Logo
                                 azexpress.com.vn/"></a>
                 </li>
                 <li class="nav-item dropdown">
