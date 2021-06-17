@@ -36,7 +36,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: Az#86*123
     ports:
       - "3306:3306"
     container_name: az_docker_mariadb
@@ -56,22 +56,6 @@ services:
       - az_docker_network
     ports:
       - "6379:6379"      
-  sqlserver:
-    build:
-      context: ./sqlserver
-      dockerfile: Dockerfile
-    hostname: 'sqlserver'
-    restart: always
-    environment:
-      ACCEPT_EULA: Y
-      MSSQL_SA_PASSWORD: Admin@12345
-    ports:
-      - "1433:1433"
-    container_name: az_docker_sqlserver
-    networks: 
-      - az_docker_network
-    volumes:
-      - "ms-sqlserver-data:/var/opt/mssql"
 volumes:
   ms-sqlserver-data:
     driver: local
