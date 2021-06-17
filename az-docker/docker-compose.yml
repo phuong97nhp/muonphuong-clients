@@ -1,0 +1,107 @@
+version: '3.7'
+networks: 
+  az_docker_network: 
+    driver: bridge
+services:
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    container_name: az_docker_php
+    working_dir: "/var/www/clients"
+    restart: always
+    networks: 
+      - az_docker_network
+    volumes: 
+      - "../:/var/www/clients"
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    container_name: az_docker_nginx
+    restart: always
+    working_dir: "/var/www/clients"
+    networks: 
+      - az_docker_network
+    volumes: 
+      - "../:/var/www/clients"
+      - "./nginx/:/etc/nginx/conf.d/"
+  mariadb:
+    build:
+      context: ./mariadb
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    ports:
+      - "3306:3306"
+    container_name: az_docker_mariadb
+    volumes: 
+      - "./mariadb/data-mariadb:/var/lib/mysql"
+    networks: 
+      - az_docker_network
+  redis:
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+    volumes: 
+      - "./redis/cache:/data"
+    container_name: az_docker_redis
+    restart: always
+    networks: 
+      - az_docker_network
+    ports:
+      - "6379:6379"      
+  sqlserver:
+    build:
+      context: ./sqlserver
+      dockerfile: Dockerfile
+    hostname: 'sqlserver'
+    restart: always
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: Admin@12345
+    ports:
+      - "1433:1433"
+    container_name: az_docker_sqlserver
+    networks: 
+      - az_docker_network
+    volumes:
+      - "ms-sqlserver-data:/var/opt/mssql"
+  ruby:
+    build: 
+      context: ./ruby
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - "../ruby/:/src"
+    depends_on:
+      - postgres
+    container_name: az_docker_ruby
+    restart: always
+    networks: 
+      - az_docker_network
+    tty: true
+    stdin_open: true
+  postgres:
+    build: 
+      context: ./postgres
+      dockerfile: Dockerfile
+    container_name: az_docker_postgres
+    volumes:
+      - "./postgres/db:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_PASSWORD: password
+    networks: 
+      - az_docker_network
+    ports:
+      - 5432:5432
+    restart: always
+volumes:
+  ms-sqlserver-data:
+    driver: local
