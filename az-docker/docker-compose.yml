@@ -72,36 +72,6 @@ services:
       - az_docker_network
     volumes:
       - "ms-sqlserver-data:/var/opt/mssql"
-  ruby:
-    build: 
-      context: ./ruby
-      dockerfile: Dockerfile
-    ports:
-      - "4000:4000"
-    volumes:
-      - "../ruby/:/src"
-    depends_on:
-      - postgres
-    container_name: az_docker_ruby
-    restart: always
-    networks: 
-      - az_docker_network
-    tty: true
-    stdin_open: true
-  postgres:
-    build: 
-      context: ./postgres
-      dockerfile: Dockerfile
-    container_name: az_docker_postgres
-    volumes:
-      - "./postgres/db:/var/lib/postgresql/data"
-    environment:
-      POSTGRES_PASSWORD: password
-    networks: 
-      - az_docker_network
-    ports:
-      - 5432:5432
-    restart: always
 volumes:
   ms-sqlserver-data:
     driver: local
