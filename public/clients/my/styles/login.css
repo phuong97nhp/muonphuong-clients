@@ -1,0 +1,47 @@
+body {
+    background-color: #ff6600;
+}
+
+#mainContainer {
+    width: 30%;
+    border-radius: 10px;
+    border: 1px #20809f solid;
+    margin-top: 120px;
+    margin-bottom: 120px;
+    box-shadow: 1px 1px 6px 0px;
+    background-color: #fffcfcfc;
+}
+
+#mainContainer label {
+    font-weight: 600;
+    color: #20809f;
+}
+
+#Logo {
+    margin: 16px 0 0 0;
+}
+
+#Logo img {
+    width: 60%;
+    margin: 0 auto;
+    display: block;
+}
+
+.btn-login {
+    display: block;
+    font-weight: 500;
+    margin: 0 auto;
+    color: #324887;
+    background-color: #ff6600;
+}
+
+.add-feedback {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+.cut-feedback {
+    display: none;
+}

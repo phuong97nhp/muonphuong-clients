@@ -1,0 +1,162 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital@1&display=swap');
+* {
+    font-family: 'Barlow Condensed', sans-serif;
+} */
+
+#logo {
+    width: 115px;
+}
+
+nav#mainMenu {
+    border-bottom: 1.8px solid #ff6600;
+}
+
+.author.col {
+    background: #ff6600;
+}
+
+#copy-righter {
+    color: #324887;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.btn {
+    display: block;
+    font-weight: 500;
+    margin: 0 auto;
+    color: #324887;
+    background-color: #ff6600;
+}
+
+.bg-eee {
+    background-color: #eee;
+}
+
+.bg-ff6600 {
+    background-color: #ff6600;
+}
+
+.text-creat-bill {
+    color: #324887;
+    font-size: 16px;
+    padding: 4px;
+}
+
+.border-ff6600 {
+    border: 1.8px solid #ff6600;
+}
+
+#height-form {
+    min-height: 303px;
+}
+
+.form-control-sm {
+    height: calc(1.7em + .5rem + 1.5px);
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: 1.5px;
+}
+
+.label {
+    display: inline-block;
+    font-size: 13px;
+    width: 100%;
+}
+
+.table-header {
+    background-color: #ff6600;
+}
+
+.btn-line {
+    display: inline;
+}
+
+#footerContainer {
+    bottom: 0px;
+    height: 30px;
+    position: fixed;
+}
+
+#headerContainer {
+    top: 0px;
+    background-color: #fff;
+    z-index: 9999;
+    position: fixed;
+}
+
+#mainContainer {
+    margin-top: 50px !important;
+    margin-bottom: 30px !important;
+}
+
+.nav-link-table.active {
+    background-color: #ff6600 !important;
+    border-color: #dee2e6 #dee2e6 #fff;
+    color: #fff !important;
+}
+
+.nav-link-table {
+    border: 1.3px solid #ff6600 !important;
+    border-top-left-radius: .25rem;
+    padding: 3px 5px;
+    font-size: 13px;
+    border-top-right-radius: .25rem;
+}
+
+.nav-tabs-table {
+    border-bottom: 1px solid #ff6600 !important;
+}
+
+.tab-content-table {
+    margin-top: 2px;
+}
+
+.table td, .table th {
+    padding: 5px;
+    text-align: center;
+}
+
+.table thead th, .table tfoot tr {
+    font-size: 13px;
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 500;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: 3px 6px;
+    font-size: 13px;
+    text-align: center;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #ff6600;
+    border: 1px solid #dee2e6;
+}
+
+.page-link:focus {
+    z-index: 0;
+    outline: 0;
+    box-shadow: 0 0 0 1px rgb(0 123 255 / 25%);
+}
+
+.page-item.active .page-link {
+    z-index: 0;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+tbody tr td {
+    font-size: 15px;
+    padding: 1px !important;
+}
+
+.text-weight-600 {
+    font-weight: 600;
+}
