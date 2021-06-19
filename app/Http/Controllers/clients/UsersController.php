@@ -25,9 +25,9 @@ class UsersController extends Controller
     }
 
     public function postLogin(Request $request){
-        $strEmail = (empty($request->email)) ? '' : trim($request->email);
-        $strPassword = (empty($request->password)) ? '' : trim($request->password);
-        $intRemember = (empty($request->remember)) ? '' : trim($request->remember);
+        $strEmail = (empty($request->input('email'))) ? '' : trim($request->input('email'));
+        $strPassword = (empty($request->input('password'))) ? '' : trim($request->input('password'));
+        $intRemember = (empty($request->input('password'))) ? '' : trim($request->input('password'));
 
         if (empty($strEmail)) {
             $arrReponse = [

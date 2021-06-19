@@ -64,17 +64,17 @@
                                         </select>
                             </div>
                             <div class="form-group col-3">
-                                <label class="label" for="weight">Trọng lượng<span class="text-danger text-weight-600">(*)</span></label>
-                                <input type="text" id="weight" name="weight" class="form-control rounded
-                                            form-control-sm" placeholder="Nhập trọng lương" name="weight">
-                            </div>
-                            <div class="form-group col-3">
                                 <label class="label" for="payments">Hình thức thanh toán:</label>
                                 <select name="payments" class="form-control rounded
                                             form-control-sm" id="payments">
                                             <option>=== Chọn hình thức thanh toán ===</option>
                                             <option value="Cuoi thang">Cuối tháng</option>
                                         </select>
+                            </div>
+                            <div class="form-group col-3">
+                                <label class="label" for="weight">Trọng lượng<span class="text-danger text-weight-600">(*)</span></label>
+                                <input type="text" id="weight" name="weight" class="form-control rounded
+                                            form-control-sm" placeholder="Nhập trọng lương" name="weight">
                             </div>
                             <div class="form-group col-3">
                                 <label class="label" for="full_name_b2c">
