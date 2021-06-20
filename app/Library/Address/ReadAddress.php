@@ -9,7 +9,8 @@ class ReadAddress
 
         $path = storage_path() . "/json/tinh_tp.json";
         $arrDate = json_decode(file_get_contents($path), true); 
-        return $arrDate[$id][$strKey];
+        $result =  empty($arrDate[$id][$strKey])?'Không xác định':$arrDate[$id][$strKey];
+        return $result;
     }
 
     public static function getDistrict($id,$strKey = 'name'){
@@ -19,7 +20,8 @@ class ReadAddress
 
         $path = storage_path() . "/json/quan_huyen.json";
         $arrDate = json_decode(file_get_contents($path), true); 
-        return $arrDate[$id][$strKey];
+        $result =  empty($arrDate[$id][$strKey])?'Không xác định':$arrDate[$id][$strKey];
+        return $result;
     }
 
     public static function getDistrictState($id,$strKey = 'state'){
@@ -29,7 +31,8 @@ class ReadAddress
 
         $path = storage_path() . "/json/district_state.json";
         $arrDate = json_decode(file_get_contents($path), true); 
-        return $arrDate[$id][$strKey];
+        $result =  empty($arrDate[$id][$strKey])?'Không xác định':$arrDate[$id][$strKey];
+        return $result;
     }
 
     public static function getWard($id,$strKey = 'name'){
@@ -40,7 +43,8 @@ class ReadAddress
         $path = storage_path() . "/json/xa_phuong.json";
         $arrDate = json_decode(file_get_contents($path), true); 
         $strResult = (!empty($arrDate[$id][$strKey]))?$arrDate[$id][$strKey]:'';
-        return $strResult;
+        $result =  empty($arrDate[$id][$strKey])?'Không xác định':$arrDate[$id][$strKey];
+        return $result;
     }
 
     public static function getAddress($arrAddress,$strKey = 'name'){
@@ -48,7 +52,8 @@ class ReadAddress
             return false;
         }
         $strAddress = ReadAddress::getWard($arrAddress[0], $strKey). ', '.ReadAddress::getDistrict($arrAddress[1], $strKey). ', '.ReadAddress::getCity($arrAddress[2], $strKey);
-        return $strAddress;
+        $result =  empty($strAddress)?'Không xác định':$strAddress;
+        return $result;
     }
 
     public static function test(){

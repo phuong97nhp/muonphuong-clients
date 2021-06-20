@@ -19,25 +19,26 @@ class Orders extends Migration
             $table->string('code_customer')->nullable(); // mã khách hàng
             $table->string('code_b2b')->nullable(); // mã đơn khách hàng tạo bill
             $table->string('code_b2c')->nullable(); // mã khách hàng của khách hàng
-            $table->timestamp('create_enter')->nullable(); // thời gian tạo đơn hàng lần đầu
+            $table->timestamp('enter_date')->nullable(); // thời gian tạo đơn hàng lần đầu
             $table->timestamp('request_date')->nullable(); // thời gian yêu cầu phát
             $table->timestamp('confrim_date')->nullable(); //thời gian chuyển đơn hàng về máy chủ ( kích vào đây đồng nghĩa lên đơn tính phí)
             $table->timestamp('get_date')->nullable(); // thời gian lấy hàng 
-            $table->string('phone')->unique();  // điện thoại nhận hàng
-            $table->string('name_from')->unique();  // tên người nhận hànng
+            $table->string('phone_b2c')->nullable();  // điện thoại nhận hàng
+            $table->string('name_from')->nullable();  // Nhận hàng từ người
             $table->string('code_product')->nullable(); // mã sản phẩm của sản phẩm khách hàng
             $table->string('full_name_b2c')->nullable(); // tên khách hàng
             $table->string('address')->nullable(); // địa chỉ số nhà cụ thể 
             $table->string('payments')->nullable(); // hình thức thanh toán
             $table->integer('city')->nullable(); // id của thành phố
-            $table->integer('ward')->nullable(); // id xã phường
-            $table->integer('district')->nullable(); // id quận huyện
-            $table->integer('weight')->nullable(); // tổng trọng lượng
-            $table->integer('total')->nullable(); // tổng kiện hàng
+            $table->string('ward')->nullable(); // id xã phường
+            $table->string('district')->nullable(); // id quận huyện
+            $table->string('weight')->nullable(); // tổng trọng lượng
+            $table->integer('total')->nullable(); 
+            $table->integer('packages')->nullable(); // tổng kiện hàng
             $table->integer('address_id')->nullable(); // địa chỉ lấy hàng
             $table->integer('collection_money')->nullable(); // tiền thu hộ cho đơn hàng
-            $table->integer('into_money')->nullable(); // tổng tiền tạm tính
-            $table->integer('type')->nullable(); // loại hình thức vận chuyển
+            $table->float('into_money')->nullable(); // tổng tiền tạm tính
+            $table->string('type')->nullable(); // loại hình thức vận chuyển
             $table->integer('name_get')->nullable(); // id nhân viên đến đến lấy hàng
             $table->integer('name_confrim')->nullable(); // id nhân viên xác nhận lấy hàng
             $table->string('content')->nullable(); // nội dung yêu cầu thêm từ khách hàng

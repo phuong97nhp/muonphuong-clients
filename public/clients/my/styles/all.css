@@ -114,12 +114,14 @@ nav#mainMenu {
     margin-top: 2px;
 }
 
-.table td, .table th {
+.table td,
+.table th {
     padding: 5px;
     text-align: center;
 }
 
-.table thead th, .table tfoot tr {
+.table thead th,
+.table tfoot tr {
     font-size: 13px;
     vertical-align: bottom;
     border-bottom: 2px solid #dee2e6;
@@ -159,4 +161,20 @@ tbody tr td {
 
 .text-weight-600 {
     font-weight: 600;
+}
+
+.error-warning {
+    font-size: 13px;
+    color: red;
+    font-weight: 400;
+    margin-bottom: 5px !important;
+}
+
+.table td,
+.table th {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    margin-top: 5px;
+    font-size: 13px;
+    margin-bottom: 5px;
 }

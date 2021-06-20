@@ -54,13 +54,17 @@
             </ul>
         </nav>
     </header>
-
+    @if(session('message'))
+        <div class="alert alert-success text-success">
+          {{session('message')}} 
+        </div>
+    @endif
     @yield('mainContainer')
 
     <footer id="footerContainer" class="container-fluid">
         <div class="row">
             <div class="author col">
-                <p class="text-center mt-2" id="copy-righter">Bản quyền thuộc về &copy; <a target="_back" href="http://azexpress.com.vn/">AZExpress</a> - Version <a style="color: #ffc400" href="/phien-ban">1.0.0</a> - By team<a style="color: #ffc400" href="/phien-ban"> Nguyễn Hoàng Phương - 0962640068</a></p>
+                <p class="text-center mt-2" id="copy-righter">Bản quyền thuộc về &copy; <a target="_back" href="http://azexpress.com.vn/">AZExpress</a> - Version <a style="color: #ffc400" href="/phien-ban">1.0.0</a> - By team<a style="color: #ffc400" href="/phien-ban"> Nguyễn Hoàng Phương</a></p>
             </div>
         </div>
     </footer>

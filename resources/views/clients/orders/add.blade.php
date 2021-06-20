@@ -18,7 +18,7 @@
         <div class="tab-content tab-content-table">
             <div id="home" class="tab-pane active">
                 <div class="bg-eee border-ff6600">
-                    <form method="POST" action="{{asset('/post-add-order')}}" enctype="multipart/form-data">
+                    <form method="POST" action="{{url('/post-add-order')}}">
                         @csrf
                         <div class="row p-2">
                             <div class="form-group col-12">
@@ -26,33 +26,52 @@
                                 <select name="address_customer" class="form-control rounded form-control-sm" id="address_customer">
                                     <option>=== Chọn địa chỉ tạo đơn vận ===</option>
                                     @foreach ($arrData["address"] as $key => $item)
-                                        <option {{Auth::user()["address_id"]==$key?'selected':'' }} value="{{ $key }}">{{ $item }}</option>
+                                        <option  @if(old('address_customer'))
+                                            {{(old('address_customer') == $key)?'selected':''}}
+                                        @else
+                                            {{(Auth::user()['address_id'] == $key)?'selected':''}}
+                                        @endif value="{{ $key }}">{{ $item }}</option>
                                     @endforeach
                                 </select>
+                                @if($errors->has('address_id'))
+                                    <p class="error-warning">{{$errors->first('address_id')}}</p>
+                                @endif
                             </div>
                             <div class="form-group col-3">
                                 <label class="label" for="">Địa chỉ<span class="text-danger text-weight-600">(*)</span></label>
-                                <input id="address"  type="text" class="form-control rounded form-control-sm" placeholder="Nhập vào địa chỉ (nhà và đường)" name="address">
+                                <input id="address"  type="text" class="form-control rounded form-control-sm" placeholder="Nhập vào địa chỉ (nhà và đường)" name="address" value="{{old('address')}}">
+                                @if($errors->has('address'))
+                                    <p class="error-warning">{{$errors->first('address')}}</p>
+                                @endif
                             </div>
                             <div class="form-group col-3">
                                 <label class="label" for="city">Tỉnh/Thành phố:<span class="text-danger text-weight-600">(*)</span></label>
-                                <select class="form-control rounded form-control-sm" name="city" id="city">
+                                <select class="form-control rounded form-control-sm" name="city" id="city" @if(old('city')) idOldCity="{{old('city')}}" @endif>
                                     <option>=== Chọn tỉnh thành phố ===</option>
                                 </select>
+                                @if($errors->has('city'))
+                                    <p class="error-warning">{{$errors->first('city')}}</p>
+                                @endif
                             </div>
 
                             <div class="form-group col-3">
                                 <label class="label" for="district">Quận/Huyện:<span class="text-danger text-weight-600">(*)</span></label>
-                                <select class="form-control rounded form-control-sm" name="district" id="district">
+                                <select class="form-control rounded form-control-sm" name="district" id="district" @if(old('district')) idOldDistrict="{{old('district')}}"@endif>
                                     <option>=== Chọn quận huyện ===</option>
                                 </select>
+                                @if($errors->has('district'))
+                                    <p class="error-warning">{{$errors->first('district')}}</p>
+                                @endif
                             </div>
 
                             <div class="form-group col-3">
                                 <label class="label" for="ward">Xã/Phương:<span class="text-danger text-weight-600">(*)</span></label>
-                                <select class="form-control rounded form-control-sm" name="ward" id="ward">
+                                <select class="form-control rounded form-control-sm" name="ward" id="ward"@if(old('ward')) idOldWard="{{old('ward')}}"@endif>
                                     <option>=== Chọn xã phường ===</option>
                                 </select>
+                                @if($errors->has('ward'))
+                                    <p class="error-warning">{{$errors->first('ward')}}</p>
+                                @endif
                             </div>
 
                             <div class="form-group col-3">
@@ -60,54 +79,81 @@
                                 <select name="type" class="form-control rounded
                                             form-control-sm" id="type">
                                             <option>=== Chọn loại dịch vụ ===</option>
-                                            <option value="CPN">Chuyển phát nhanh</option>
+                                            <option {{(old('type') == 'CPN')?'selected':''}} value="CPN">Chuyển phát nhanh</option>
                                         </select>
+                                @if($errors->has('type'))
+                                    <p class="error-warning">{{$errors->first('type')}}</p>
+                                @endif
                             </div>
                             <div class="form-group col-3">
                                 <label class="label" for="payments">Hình thức thanh toán:</label>
                                 <select name="payments" class="form-control rounded
                                             form-control-sm" id="payments">
                                             <option>=== Chọn hình thức thanh toán ===</option>
-                                            <option value="Cuoi thang">Cuối tháng</option>
+                                            <option {{(old('payments') == 'Cuoi thang')?'selected':''}} value="Cuoi thang">Cuối tháng</option>
                                         </select>
+                                @if($errors->has('payments'))
+                                    <p class="error-warning">{{$errors->first('payments')}}</p>
+                                @endif
                             </div>
                             <div class="form-group col-3">
                                 <label class="label" for="weight">Trọng lượng<span class="text-danger text-weight-600">(*)</span></label>
-                                <input type="text" id="weight" name="weight" class="form-control rounded
-                                            form-control-sm" placeholder="Nhập trọng lương" name="weight">
+                                <input type="number" id="weight" name="weight" class="form-control rounded
+                                            form-control-sm" placeholder="Nhập trọng lương" name="weight" value="{{old('weight')}}">
+                                @if($errors->has('weight'))
+                                    <p class="error-warning">{{$errors->first('weight')}}</p>
+                                @endif
                             </div>
                             <div class="form-group col-3">
                                 <label class="label" for="full_name_b2c">
                                     Tên người nhận<span class="text-danger text-weight-600">(*)</span>
                                 </label>
                                 <input type="text" id="full_name_b2c" class="form-control rounded
-                                form-control-sm" placeholder="Nhập tên người nhận hàng" name="full_name_b2c">
+                                form-control-sm" placeholder="Nhập tên người nhận hàng" name="full_name_b2c" value="{{old('full_name_b2c')}}">
+                                @if($errors->has('full_name_b2c'))
+                                    <p class="error-warning">{{$errors->first('full_name_b2c')}}</p>
+                                @endif
                             </div>
 
                             <div class="form-group col-3">
-                                <label class="label" for="phone">Điện thoại người nhận<span class="text-danger text-weight-600">(*)</span></label>
-                                <input type="text" name="phone" class="form-control rounded
-                                            form-control-sm" placeholder="Nhập số điện thoại" name="phone">
+                                <label class="label" for="phone_b2c">Điện thoại người nhận<span class="text-danger text-weight-600">(*)</span></label>
+                                <input type="number" name="phone_b2c" class="form-control rounded
+                                            form-control-sm" placeholder="Nhập số điện thoại" name="phone" value="{{old('phone_b2c')}}">
+                                @if($errors->has('phone_b2c'))
+                                    <p class="error-warning">{{$errors->first('phone_b2c')}}</p>
+                                @endif
                             </div>
                             <div class="form-group col-3">
                                 <label class="label" for="code_b2c">Mã đơn hàng riêng</label>
                                 <input type="text" name="code_b2c" class="form-control rounded
-                                            form-control-sm" placeholder="Mã đơn hàng riêng" name="code_b2c">
+                                            form-control-sm" placeholder="Mã đơn hàng riêng" name="code_b2c" value="{{old('code_b2c')}}">
+                                @if($errors->has('code_b2c'))
+                                    <p class="error-warning">{{$errors->first('code_b2c')}}</p>
+                                @endif
                             </div>
                             <div class="form-group col-3">
                                 <label class="label" for="collection_money">Thu hộ</label>
                                 <input type="text" name="collection_money" class="form-control rounded
-                                            form-control-sm" placeholder="Nhận số tiền thu hộ" name="collection_money">
+                                            form-control-sm" placeholder="Nhận số tiền thu hộ" name="collection_money" value="{{old('collection_money')}}">
+                                @if($errors->has('collection_money'))
+                                    <p class="error-warning">{{$errors->first('collection_money')}}</p>
+                                @endif
                             </div>
                             <div class="form-group col-3">
-                                <label class="label" for="into_money">Tổng cước tạm tính <span class="text-danger text-weight-600">(*)</span></label>
+                                <label class="label" for="into_money">Tổng cước tạm tính </label>
                                 <input readonly type="text" id="into_money" class="form-control rounded
-                                            form-control-sm" placeholder="" name="into_money">
+                                            form-control-sm" placeholder="" name="into_money" value="{{old('into_money')}}">
+                                @if($errors->has('into_money'))
+                                    <p class="error-warning">{{$errors->first('into_money')}}</p>
+                                @endif
                             </div>
                             <div class="form-group col-9">
                                 <label class="label" for="content">Ghi chú</label>
                                 <input type="text" name="content" class="form-control rounded
-                                            form-control-sm" placeholder="Nhận nội dung yêu cầu thêm" name="content">
+                                            form-control-sm" placeholder="Nhận nội dung yêu cầu thêm" name="content"  value="{{old('content')}}">
+                                @if($errors->has('content'))
+                                    <p class="error-warning">{{$errors->first('content')}}</p>
+                                @endif
                             </div>
                             <div class="form-group col-2">
                                 <label class="label" for="">&nbsp;</label>
@@ -160,33 +206,37 @@
                 <table class="table table-striped">
                     <thead class="table-header">
                         <tr>
-                            <th><input type="checkbox"></th>
+                            {{-- <th><input type="checkbox"></th> --}}
                             <th>Mã bill</th>
                             <th>Tên người nhận</th>
                             <th>Số điện thoại</th>
                             <th>Số kiện</th>
                             <th>Loại dịch vụ</th>
                             <th>HTTT</th>
-                            <th>Địa chỉ</th>
-                            <th>Nội dung</th>
-                            <th>Ghi chú</th>
+                            <th>Xã/phường</th>
+                            <th>Quận/huyện</th>
+                            <th>Tỉnh/thành phố</th>
+                            <th>Thành tiền tạm tính</th>
+                            <th>Thời gian tạo</th>
                             <!-- <th>Trạng thái</th> -->
                         </tr>
                     </thead>
                     <tbody class="text-center">
                         @if($arrData['orders'])
-                            @foreach ($arrData['orders'] as $item)
+                            @foreach ($arrData['orders'] as $key => $item)
                                 <tr>
-                                    <td><p class="text-center">Không có dữ liệu</p></td>
-                                    <td><p class="text-center">Không có dữ liệu</p></td>
-                                    <td><p class="text-center">Không có dữ liệu</p></td>
-                                    <td><p class="text-center">Không có dữ liệu</p></td>
-                                    <td><p class="text-center">Không có dữ liệu</p></td>
-                                    <td><p class="text-center">Không có dữ liệu</p></td>
-                                    <td><p class="text-center">Không có dữ liệu</p></td>
-                                    <td><p class="text-center">Không có dữ liệu</p></td>
-                                    <td><p class="text-center">Không có dữ liệu</p></td>
-                                    <td><p class="text-center">Không có dữ liệu</p></td>
+                                    {{-- <td class="text-center"><input type="checkbox"></td> --}}
+                                    <td class="text-center">{{$item['code_az']}}</td>
+                                    <td class="text-left">{{$item['full_name_b2c']}}</td>
+                                    <td class="text-center">{{$item['phone_b2c']}}</td>
+                                    <td class="text-center">{{$item['packages']}}</td>
+                                    <td class="text-center">{{$item['type']}}</td>
+                                    <td class="text-center">{{$item['payments']}}</td>
+                                    <td class="text-center">{{App\Library\Address\ReadAddress::getWard($item['ward'])}}</td>
+                                    <td class="text-center">{{App\Library\Address\ReadAddress::getDistrict($item['district'])}}</td>
+                                    <td class="text-center">{{App\Library\Address\ReadAddress::getCity($item['city'])}}</td>
+                                    <td class="text-center">{{$item['into_money']}}</td>
+                                    <td class="text-center">{{$item['enter_date']}}</td>
                                 </tr>
                             @endforeach
                         @else
@@ -197,28 +247,23 @@
                     </tbody>
                     <tfoot class="table-header">
                         <tr>
-                            <td><input type="checkbox"></td>
+                            {{-- <td><input type="checkbox"></td> --}}
                             <td>Mã bill</td>
                             <td>Tên người nhận</td>
-                            <td>Số điện thoại</td>
+                            <td>Số điện tdoại</td>
                             <td>Số kiện</td>
                             <td>Loại dịch vụ</td>
                             <td>HTTT</td>
-                            <td>Địa chỉ</td>
-                            <td>Nội dung</td>
-                            <td>Ghi chú</td>
-                            <!-- <th>Trạng thái</th> -->
+                            <td>Xã/phường</td>
+                            <td>Quận/huyện</td>
+                            <td>Tỉnh/tdành phố</td>
+                            <td>tdành tiền tạm tính</td>
+                            <td>tdời gian tạo</td>
                         </tr>
                     </tfoot>
                 </table>
                 <div class="d-flex justify-content-center">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Trang trước</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Trang sau</a></li>
-                    </ul>
+                    {{ $arrData['orders']->links("pagination::bootstrap-4") }}
                 </div>
             </div>
         </div>
