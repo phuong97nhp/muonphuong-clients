@@ -186,3 +186,61 @@ tbody tr td {
 .btn-close-message {
     margin-top: -5px;
 }
+
+.dataTables_filter,
+.dataTables_info {
+    display: none;
+}
+
+#data-tabel-search_wrapper button.dt-button {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    color: #fff;
+    background-color: #ff6600;
+    border-radius: 3px !important;
+    border-color: #1860bb;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 3px 8px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 1px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#data-tabel-search_wrapper .dt-buttons {
+    background-color: #324887;
+    padding: 5px;
+    margin: 5px 0;
+}
+
+#data-tabel-search_paginate {
+    margin: 0 auto;
+    display: table;
+}
+
+#tabel-data::-webkit-scrollbar {
+    width: 10px;
+}
+
+#tabel-data::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#tabel-data::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+#tabel-data::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

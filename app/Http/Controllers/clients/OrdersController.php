@@ -13,12 +13,97 @@ use App\Models\Address;
 use App\Library\Address\ReadAddress;
 use App\Library\Payment\IntoMoney;
 use App\Models\Order;
+use App\Library\General;
 
 class OrdersController extends Controller
 {
     // 1. Chờ xữ lý, 2. Yêu Cầu phát, 3. Chờ phát, 4 Đã phát thành công, 5. Hoàn lại đơn hàng
     public function index (){
-        return view('clients.orders.index');
+        $intLimit =  50;
+        $strCodeCustomer = Auth::user()["code_customer"];
+        $arrListAddress = Address::where('code_customer', $strCodeCustomer)->get();
+        $arrData = [];
+        if(!empty($arrListAddress)){
+            foreach ($arrListAddress as $item) {
+                $strAddress = $item->address.', '.ReadAddress::getAddress([$item->ward, $item->district, $item->city], 'name_with_type').' - '.$item->phone;
+                if(!empty($strAddress)) $arrData['address'][$item->id] = $strAddress;
+            }
+        }
+        return view('clients.orders.index')->with('arrData', $arrData);
+    }
+
+    public function postSearchIndex(Request $request){
+        $serviveQueryOrder = Order::query();
+        if ($request->input('code_az')) {
+            $serviveQueryOrder->where('code_az', 'LIKE', '%' .$request->input('code_az'). '%');
+        }
+
+        if ($request->input('city')) {
+            $serviveQueryOrder->where('city', $request->input('city'));
+        }
+
+        if ($request->input('district')) {
+            $serviveQueryOrder->where('district', $request->input('district'));
+        }
+
+        if ($request->input('ward')) {
+            $serviveQueryOrder->where('ward', $request->input('ward'));
+        }
+
+        if ($request->input('dateEnd') && $request->input('dateBegin')) {
+            $strDateBegin = date("Y-m-d H:i:s", strtotime($request->input('dateBegin')." 00:00:00"));
+            $strDateEnd = date("Y-m-d H:i:s", strtotime($request->input('dateEnd')." 23:59:59"));
+            $serviveQueryOrder->where("enter_date <= $strDateBegin AND enter_date >= $strDateEnd");
+        }
+
+        if ($request->input('type')) {
+            $serviveQueryOrder->where('type', $request->input('type'));
+        }
+        if ($request->input('status')) {
+            $serviveQueryOrder->where('status', $request->input('status'));
+        }
+        if ($request->input('address_customer')) {
+            $serviveQueryOrder->where('address_customer', $request->input('address_customer'));
+        }
+        if ($request->input('is_deleted')) {
+            $serviveQueryOrder->where('is_deleted', 0);
+        }
+        $strCodeCustomer = Auth::user()["code_customer"];
+        if ($request->input('code_customer')) {
+            $serviveQueryOrder->where('code_customer', $strCodeCustomer);
+        }
+
+        //  do some thing data
+        $arrListOrders = $serviveQueryOrder->get();
+        $arrData = [];
+        if(!empty($arrListOrders)){
+            foreach ($arrListOrders as $key => $item) {
+                $arrData[] = [ 
+                    $key+1, 
+                    $item['code_az'], 
+                    $item['full_name_b2c'], 
+                    $item['phone_b2c'],
+                    $item['packages'],
+                    $item['weight'].'<sub>gram</sub>',
+                    General::$arrTypeShip[$item['type']],
+                    General::$arrStatusOrder[$item['status']],
+                    ReadAddress::getCity($item['city']),
+                    ReadAddress::getDistrict($item['district']),
+                    ReadAddress::getWard($item['ward']),
+                    $item['into_money'].'<sup>đ</sup>',
+                    $item['enter_date'],
+                ];
+            }
+        }
+
+        $arrReponse = [
+            'success' => true,
+            'code' => 200,
+            'messenger' => 'Cập nhật dữ liệu thành công',
+            'data' => $arrData,
+            'error' => []
+        ];
+        return response()->json($arrReponse, 200);
     }
     
     public function add(){
@@ -55,6 +140,7 @@ class OrdersController extends Controller
 
         $messages = [
             'address_customer.required' => 'Cần chọn địa chỉ tạo đơn vận',
+            'address_customer.numeric' => 'Địa chỉ nhập vào không hợp lệ',
             'address.required' => 'Cần nhập vào địa chỉ',
             'city.required' => 'Cần chọn thành phố',
             'city.numeric' => 'Địa chỉ thành phố được lưu dưới dạng số',
@@ -62,7 +148,7 @@ class OrdersController extends Controller
             'district.numeric' => 'Địa chỉ quận huyện không hợp lệ',
             'ward.required' => 'Cần chọn xã phường',
             'ward.numeric' => 'Địa chỉ xã phường không hợp lệ',
-            'type.required' => 'Cần nhập vào lại đơn hàng',
+            'type.required' => 'Cần nhập chọn hình thức chuyển phát',
             'weight.required' => 'Cần nhập vào trọng lượng đơn vận',
             'weight.numeric' => 'Cần nhập trọng lượng là số',
             'full_name_b2c.required' => 'Cần nhập vào thên người nhận',

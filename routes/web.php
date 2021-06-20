@@ -57,7 +57,8 @@ Route::group(['prefix' => '/', 'middleware' => 'CheckAdmin'], function () {
     Route::get('/them-dia-chi', [AddressController::class, 'add'])->name('address-add');
     Route::get('/theo-doi-don-van', [OrdersController::class, 'index'])->name('order-index');
     Route::get('/dang-xuat', [UsersController::class, 'logout'])->name('logout');
-
+    
+    Route::post('/theo-doi-don-van-search', [OrdersController::class, 'postSearchIndex'])->name('post-order-index');
     Route::post('/post-import-order', [OrdersController::class, 'postImport'])->name('post-import-order');
     Route::post('/post-add-order', [OrdersController::class, 'postAdd'])->name('post-add-order');
     Route::post('/post-payment', [OrdersController::class, 'postPayment'])->name('post-payment');

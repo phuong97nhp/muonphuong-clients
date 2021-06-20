@@ -87,7 +87,7 @@ $(document).ready(function() {
         switch (intIdAddrees) {
             case 'city':
                 intIdAddrees = 'district'
-                var html = '<option>=== Chọn quận huyện ===</option>';
+                var html = '<option  value="">=== Chọn quận huyện ===</option>';
                 var localDistrict = localStorage.getItem("localDistrict");
                 localDistrict = JSON.parse(localDistrict);
                 var idOldDistrictSelected = '';
@@ -99,11 +99,11 @@ $(document).ready(function() {
                     }
                     html += '<option ' + idOldDistrictSelected + ' value="' + key + '">' + value.name_with_type + '</option>';
                 }
-                $('#ward').html('<option>=== Chọn xã phường ===</option>');
+                $('#ward').html('<option  value="">=== Chọn xã phường ===</option>');
                 break;
             case 'district':
                 intIdAddrees = 'ward'
-                var html = '<option>=== Chọn xã phường ===</option>';
+                var html = '<option  value="">=== Chọn xã phường ===</option>';
                 var localWard = localStorage.getItem("localWard");
                 localWard = JSON.parse(localWard);
                 var idOldWardSelected = '';
@@ -118,7 +118,7 @@ $(document).ready(function() {
                 break;
             default:
                 intIdAddrees = 'city'
-                var html = '<option>=== Chọn tỉnh thành phố ===</option>';
+                var html = '<option  value="">=== Chọn tỉnh thành phố ===</option>';
                 var localCity = localStorage.getItem("localCity");
                 localCity = JSON.parse(localCity);
                 var idOldCitySelected = '';
@@ -130,10 +130,80 @@ $(document).ready(function() {
                     }
                     html += '<option ' + idOldCitySelected + ' value="' + key + '">' + value.name_with_type + '</option>';
                 }
-                $('#ward').html('<option>=== Chọn xã phường ===</option>');
-                $('#district').html('<option>=== Chọn quận huyện ===</option>');
+                $('#ward').html('<option  value="">=== Chọn xã phường ===</option>');
+                $('#district').html('<option  value="">=== Chọn quận huyện ===</option>');
                 break;
         }
         $('#' + intIdAddrees).html(html)
+    }
+
+
+    //!================================ theo dõi đơn vận ===========================
+
+    $(".datepicker").datepicker({
+        altFormat: "dd-mm-yy",
+    });
+
+    var tableSearchData = $('#data-tabel-search').DataTable({
+        "ajax": {
+            url: url_base + 'theo-doi-don-van-search',
+            dataType: 'json',
+            type: 'POST',
+            crossDomain: true,
+            data: function(d) {
+                $('form#form-search-order').serialize();
+            }
+        },
+        "order": [],
+        "dom": 'Bfrtip',
+        "buttons": ['copyHtml5', 'excelHtml5', 'csvHtml5', 'print'],
+        "pageLength": 10,
+        "pagingType": "full_numbers",
+        "language": {
+            "decimal": "",
+            "emptyTable": "Thông tin không tồn tại",
+            "info": "Hiển từ trang _START_ đến trang _END_ tất cả _TOTAL_ mục",
+            "infoEmpty": "Không tồn tại thông tin nào",
+            "infoFiltered": "(filtered from _MAX_ total entries)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Hiển thị _MENU_ mục",
+            "loadingRecords": "Đang tải xuống...",
+            "processing": "Đang tải xuống...",
+            "search": "Tìm nhanh:",
+            "zeroRecords": "No matching records found",
+            "paginate": {
+                "first": "Tiếp",
+                "last": "Trước",
+                "next": "Trang Tiếp",
+                "previous": "Trang Trước"
+            },
+            "aria": {
+                "sortAscending": ": Kích hoạt tăng dần",
+                "sortDescending": ": Kích hoạt giảm dần"
+            }
+        },
+    });
+
+
+
+    function dataTabelSearch() {
+        var weight = 132;
+        $.ajax({
+            url: url_base + 'theo-doi-don-van-search',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                weight: weight,
+            },
+            success: function(result) {
+                if (result.constructor === String) {
+                    result = JSON.parse(result);
+                }
+                if (result.success == true) {
+                    return result;
+                }
+            }
+        });
     }
 });

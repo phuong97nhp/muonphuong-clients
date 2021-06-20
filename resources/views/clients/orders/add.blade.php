@@ -34,7 +34,7 @@
                             <div class="form-group col-12">
                                 <label class="label" for="address_customer">Địa chỉ tạo đơn vận:<span class="text-danger text-weight-600">(*)</span></label>
                                 <select name="address_customer" class="form-control rounded form-control-sm" id="address_customer">
-                                    <option>=== Chọn địa chỉ tạo đơn vận ===</option>
+                                    <option  value="">=== Chọn địa chỉ tạo đơn vận ===</option>
                                     @if ($arrData["address"])
                                         @foreach ($arrData["address"] as $key => $item)
                                             <option  @if(old('address_customer'))
@@ -45,8 +45,8 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                @if($errors->has('address_id'))
-                                    <p class="error-warning">{{$errors->first('address_id')}}</p>
+                                @if($errors->has('address_customer'))
+                                    <p class="error-warning">{{$errors->first('address_customer')}}</p>
                                 @endif
                             </div>
                             <div class="form-group col-3">
@@ -59,7 +59,7 @@
                             <div class="form-group col-3">
                                 <label class="label" for="city">Tỉnh/Thành phố:<span class="text-danger text-weight-600">(*)</span></label>
                                 <select class="form-control rounded form-control-sm" name="city" id="city" @if(old('city')) idOldCity="{{old('city')}}" @endif>
-                                    <option>=== Chọn tỉnh thành phố ===</option>
+                                    <option value="0" >=== Chọn tỉnh thành phố ===</option>
                                 </select>
                                 @if($errors->has('city'))
                                     <p class="error-warning">{{$errors->first('city')}}</p>
@@ -69,7 +69,7 @@
                             <div class="form-group col-3">
                                 <label class="label" for="district">Quận/Huyện:<span class="text-danger text-weight-600">(*)</span></label>
                                 <select class="form-control rounded form-control-sm" name="district" id="district" @if(old('district')) idOldDistrict="{{old('district')}}"@endif>
-                                    <option>=== Chọn quận huyện ===</option>
+                                    <option value="0" >=== Chọn quận huyện ===</option>
                                 </select>
                                 @if($errors->has('district'))
                                     <p class="error-warning">{{$errors->first('district')}}</p>
@@ -79,7 +79,7 @@
                             <div class="form-group col-3">
                                 <label class="label" for="ward">Xã/Phương:<span class="text-danger text-weight-600">(*)</span></label>
                                 <select class="form-control rounded form-control-sm" name="ward" id="ward"@if(old('ward')) idOldWard="{{old('ward')}}"@endif>
-                                    <option>=== Chọn xã phường ===</option>
+                                    <option value="0" >=== Chọn xã phường ===</option>
                                 </select>
                                 @if($errors->has('ward'))
                                     <p class="error-warning">{{$errors->first('ward')}}</p>
@@ -90,8 +90,10 @@
                                 <label class="label" for="type">Loại dịch vụ:<span class="text-danger text-weight-600">(*)</span></label>
                                 <select name="type" class="form-control rounded
                                             form-control-sm" id="type">
-                                            <option>=== Chọn loại dịch vụ ===</option>
-                                            <option {{(old('type') == 'CPN')?'selected':''}} value="CPN">Chuyển phát nhanh</option>
+                                            <option  value="">=== Chọn loại dịch vụ ===</option>
+                                            @foreach (App\Library\General::$arrTypeShip as $key => $item)
+                                                <option {{(old('type') == $key)?'selected':''}} value="{{$key}}">{{$item}}</option>
+                                            @endforeach
                                         </select>
                                 @if($errors->has('type'))
                                     <p class="error-warning">{{$errors->first('type')}}</p>
@@ -101,7 +103,7 @@
                                 <label class="label" for="payments">Hình thức thanh toán:</label>
                                 <select name="payments" class="form-control rounded
                                             form-control-sm" id="payments">
-                                            <option value="0">=== Chọn hình thức thanh toán ===</option>
+                                            <option  value="">=== Chọn hình thức thanh toán ===</option>
                                             <option {{(old('payments') == 'Cuoi thang')?'selected':''}} value="Cuoi thang">Cuối tháng</option>
                                         </select>
                                 @if($errors->has('payments'))
@@ -187,7 +189,7 @@
                             <div class="form-group col-md-12">
                                 <label class="label" for="address_customer">Địa chỉ nhận đơn:</label>
                                 <select required name="address_customer" class="form-control rounded form-control-sm">
-                                    <option>=== Chọn địa chỉ tạo đơn vận ===</option>
+                                    <option  value="">=== Chọn địa chỉ tạo đơn vận ===</option>
                                     @if ($arrData["address"])
                                         @foreach ($arrData["address"] as $key => $item)
                                             <option {{Auth::user()["address_id"]==$key?'selected':'' }} value="{{ $key }}">{{ $item }}</option>
@@ -213,7 +215,6 @@
                     </form>
                 </div>
             </div>
-        </div>
         </div>
         <div class="row">
             <div class="col-12 mt-2">
