@@ -66,6 +66,7 @@ Route::group(['prefix' => '/', 'middleware' => 'CheckAdmin'], function () {
     // Route::get('/', [AppController::class, 'index'])->name('home');
     // Route::post('/', [AppController::class, 'add'])->name('add');
     // Route::get('tao-don-hang', [ProductController::class, 'creat'])->name('product');
+
 });
 
 // Route::get('/{any}', [AppController::class, 'pagenotfound'])->where('any', '.*');
