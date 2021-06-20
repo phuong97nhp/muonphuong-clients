@@ -20,7 +20,7 @@ class Address extends Migration
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('ward')->nullable();
-            $table->string('district')->unique();
+            $table->string('district')->nullable();
             $table->string('phone')->nullable();
             $table->string('website')->nullable();
             $table->string('address_of')->nullable(); // post, customer
