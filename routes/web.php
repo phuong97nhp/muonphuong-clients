@@ -60,6 +60,10 @@ Route::group(['prefix' => '/', 'middleware' => 'CheckAdmin'], function () {
     
     Route::post('/theo-doi-don-van-search', [OrdersController::class, 'postSearchIndex'])->name('post-order-index');
     Route::post('/post-import-order', [OrdersController::class, 'postImport'])->name('post-import-order');
+
+    Route::post('/post-import-order', [OrdersController::class, 'postImport'])->name('post-import-address');
+    Route::post('/post-add-address', [AddressController::class, 'postAdd'])->name('post-add-order');
+
     Route::post('/post-add-order', [OrdersController::class, 'postAdd'])->name('post-add-order');
     Route::post('/post-payment', [OrdersController::class, 'postPayment'])->name('post-payment');
 
