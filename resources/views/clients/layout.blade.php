@@ -54,11 +54,7 @@
             </ul>
         </nav>
     </header>
-    @if(session('message'))
-        <div class="alert alert-success text-success">
-          {{session('message')}} 
-        </div>
-    @endif
+    
     @yield('mainContainer')
 
     <footer id="footerContainer" class="container-fluid">

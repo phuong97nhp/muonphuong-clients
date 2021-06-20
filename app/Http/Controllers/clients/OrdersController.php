@@ -116,7 +116,7 @@ class OrdersController extends Controller
             'packages'         => (int) 1,
             'address_id'       => (int) $intAddressCustomer,
             'collection_money' => (int) $intCollectionMoney,
-            'into_money'       => (float) $intIntoMony,
+            'into_money'       => (string) $intIntoMony,
             'type'             => (string) $strType,
             'name_get'         => null,
             'name_confrim'     => null,

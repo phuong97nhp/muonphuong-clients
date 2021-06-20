@@ -178,3 +178,11 @@ tbody tr td {
     font-size: 13px;
     margin-bottom: 5px;
 }
+
+.alert.alert-success.text-success.my-1.p-2 {
+    font-size: 13px;
+}
+
+.btn-close-message {
+    margin-top: -5px;
+}

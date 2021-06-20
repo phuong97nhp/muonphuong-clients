@@ -37,7 +37,7 @@ class Orders extends Migration
             $table->integer('packages')->nullable(); // tổng kiện hàng
             $table->integer('address_id')->nullable(); // địa chỉ lấy hàng
             $table->integer('collection_money')->nullable(); // tiền thu hộ cho đơn hàng
-            $table->float('into_money')->nullable(); // tổng tiền tạm tính
+            $table->string('into_money')->nullable(); // tổng tiền tạm tính
             $table->string('type')->nullable(); // loại hình thức vận chuyển
             $table->integer('name_get')->nullable(); // id nhân viên đến đến lấy hàng
             $table->integer('name_confrim')->nullable(); // id nhân viên xác nhận lấy hàng

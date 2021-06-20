@@ -15,6 +15,16 @@
                 </a>
             </li>
         </ul>
+        
+        @if(session('message'))
+            <div class="alert alert-success text-success my-1 p-2">
+                {{session('message')}}
+                <button type="button" class="close btn-close-message" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
         <div class="tab-content tab-content-table">
             <div id="home" class="tab-pane active">
                 <div class="bg-eee border-ff6600">
@@ -25,13 +35,15 @@
                                 <label class="label" for="address_customer">Địa chỉ tạo đơn vận:<span class="text-danger text-weight-600">(*)</span></label>
                                 <select name="address_customer" class="form-control rounded form-control-sm" id="address_customer">
                                     <option>=== Chọn địa chỉ tạo đơn vận ===</option>
-                                    @foreach ($arrData["address"] as $key => $item)
-                                        <option  @if(old('address_customer'))
-                                            {{(old('address_customer') == $key)?'selected':''}}
-                                        @else
-                                            {{(Auth::user()['address_id'] == $key)?'selected':''}}
-                                        @endif value="{{ $key }}">{{ $item }}</option>
-                                    @endforeach
+                                    @if ($arrData["address"])
+                                        @foreach ($arrData["address"] as $key => $item)
+                                            <option  @if(old('address_customer'))
+                                                {{(old('address_customer') == $key)?'selected':''}}
+                                            @else
+                                                {{(Auth::user()['address_id'] == $key)?'selected':''}}
+                                            @endif value="{{ $key }}">{{ $item }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                                 @if($errors->has('address_id'))
                                     <p class="error-warning">{{$errors->first('address_id')}}</p>
@@ -89,7 +101,7 @@
                                 <label class="label" for="payments">Hình thức thanh toán:</label>
                                 <select name="payments" class="form-control rounded
                                             form-control-sm" id="payments">
-                                            <option>=== Chọn hình thức thanh toán ===</option>
+                                            <option value="0">=== Chọn hình thức thanh toán ===</option>
                                             <option {{(old('payments') == 'Cuoi thang')?'selected':''}} value="Cuoi thang">Cuối tháng</option>
                                         </select>
                                 @if($errors->has('payments'))
@@ -175,10 +187,12 @@
                             <div class="form-group col-md-12">
                                 <label class="label" for="address_customer">Địa chỉ nhận đơn:</label>
                                 <select required name="address_customer" class="form-control rounded form-control-sm">
-                                    <option>=== Chọn tỉnh thành phố ===</option>
-                                    @foreach ($arrData["address"] as $key => $item)
-                                        <option {{Auth::user()["address_id"]==$key?'selected':'' }} value="{{ $key }}">{{ $item }}</option>
-                                    @endforeach
+                                    <option>=== Chọn địa chỉ tạo đơn vận ===</option>
+                                    @if ($arrData["address"])
+                                        @foreach ($arrData["address"] as $key => $item)
+                                            <option {{Auth::user()["address_id"]==$key?'selected':'' }} value="{{ $key }}">{{ $item }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                             <div class="col-md-12">
@@ -207,10 +221,12 @@
                     <thead class="table-header">
                         <tr>
                             {{-- <th><input type="checkbox"></th> --}}
+                            <th>STT</th>
                             <th>Mã bill</th>
                             <th>Tên người nhận</th>
                             <th>Số điện thoại</th>
                             <th>Số kiện</th>
+                            <th>Trọng lượng</th>
                             <th>Loại dịch vụ</th>
                             <th>HTTT</th>
                             <th>Xã/phường</th>
@@ -226,16 +242,18 @@
                             @foreach ($arrData['orders'] as $key => $item)
                                 <tr>
                                     {{-- <td class="text-center"><input type="checkbox"></td> --}}
+                                    <td class="text-center">{{$key+1}}</td>
                                     <td class="text-center">{{$item['code_az']}}</td>
                                     <td class="text-left">{{$item['full_name_b2c']}}</td>
                                     <td class="text-center">{{$item['phone_b2c']}}</td>
                                     <td class="text-center">{{$item['packages']}}</td>
+                                    <td class="text-center">{{$item['weight']}} <sub>gram</sub></td>
                                     <td class="text-center">{{$item['type']}}</td>
                                     <td class="text-center">{{$item['payments']}}</td>
                                     <td class="text-center">{{App\Library\Address\ReadAddress::getWard($item['ward'])}}</td>
                                     <td class="text-center">{{App\Library\Address\ReadAddress::getDistrict($item['district'])}}</td>
                                     <td class="text-center">{{App\Library\Address\ReadAddress::getCity($item['city'])}}</td>
-                                    <td class="text-center">{{$item['into_money']}}</td>
+                                    <td class="text-center">{{$item['into_money']}} <sup>đ</sup></td>
                                     <td class="text-center">{{$item['enter_date']}}</td>
                                 </tr>
                             @endforeach
@@ -248,10 +266,12 @@
                     <tfoot class="table-header">
                         <tr>
                             {{-- <td><input type="checkbox"></td> --}}
+                            <td>STT</td>
                             <td>Mã bill</td>
                             <td>Tên người nhận</td>
                             <td>Số điện tdoại</td>
                             <td>Số kiện</td>
+                            <td>Trọng lượng</td>
                             <td>Loại dịch vụ</td>
                             <td>HTTT</td>
                             <td>Xã/phường</td>

@@ -26,13 +26,13 @@ Route::group(['prefix' => '/', 'middleware' => 'CheckOut'], function () {
     Route::get('/dang-ky', function(){
         $value = [
             'password' => Hash::make('123465'),
-            'user_name' => 'vvt',
-            'last_name' => "Thanh",
+            'user_name' => 'phuong97nhp',
+            'last_name' => "Phương",
             'code_customer' => 'BVIET',
             'code_product' => '2323',
             'first_name' => "Nguyễn Hoàng",
             'full_name' =>"Nguyễn Hoàng Phương",
-            'email' => 'vvt@gmail.com',
+            'email' => 'phuong97nhp@gmail.com',
             'website' => 'chuyenweb.com',
             'level' => 0,
             'phone' => "0962640068",
