@@ -99,6 +99,33 @@ class OrdersController extends Controller
         $arrData['param'] = $param;
         return view('clients.orders.index')->with('arrData', $arrData);
     }
+
+    public function yeuCauPhat(Request $request){
+        $strCodeCustomer = Auth::user()["code_customer"];
+        $statusCheck = Order::where('status', 1)
+                        ->where('is_deleted', 0)
+                        ->where('code_customer', $strCodeCustomer)
+                        ->update(['status' => 2]);
+        if($statusCheck){
+            $arrReponse = [
+                'success' => true,
+                'code' => 200,
+                'messenger' => 'Cập nhật đơn vận thành công.',
+                'data' => [],
+                'error' => []
+            ];
+            return response()->json($arrReponse, 200);
+        } 
+
+        $arrReponse = [
+            'success' => false,
+            'code' => 200,
+            'messenger' => 'Kiểm tra lại bạn không có đơn hàng nào đang chờ phát.',
+            'data' => [],
+            'error' => []
+        ];
+        return response()->json($arrReponse, 200);
+    }
     
     public function add(){
         $intLimit =  30;

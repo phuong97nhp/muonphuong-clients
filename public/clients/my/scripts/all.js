@@ -185,7 +185,33 @@ $(document).ready(function() {
     //     },
     // });
 
-
+    $(document).on("click", "#yeucauphat", function() {
+        var params = $('#form-search-order').serialize();
+        $.ajax({
+            url: url_base + 'yeu-cau-phat',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                params: params,
+            },
+            success: function(result) {
+                if (result.constructor === String) {
+                    result = JSON.parse(result);
+                }
+                if (result.success == true) {
+                    return bootbox.alert({
+                        message: result.messenger,
+                        backdrop: true
+                    });
+                } else {
+                    return bootbox.alert({
+                        message: result.messenger,
+                        backdrop: true
+                    });
+                }
+            }
+        });
+    });
 
     function dataTabelSearch() {
         var weight = 132;

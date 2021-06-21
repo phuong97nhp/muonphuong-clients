@@ -58,6 +58,8 @@ Route::group(['prefix' => '/', 'middleware' => 'CheckAdmin'], function () {
     Route::get('/theo-doi-don-van', [OrdersController::class, 'index'])->name('order-index');
     Route::get('/dang-xuat', [UsersController::class, 'logout'])->name('logout');
     
+    Route::post('/yeu-cau-phat', [OrdersController::class, 'yeuCauPhat'])->name('yeu-cau-phat');
+
     Route::post('/theo-doi-don-van-search', [OrdersController::class, 'postSearchIndex'])->name('post-order-index');
     Route::post('/post-import-order', [OrdersController::class, 'postImport'])->name('post-import-order');
     Route::post('/post-add-order', [OrdersController::class, 'postAdd'])->name('post-add-order');

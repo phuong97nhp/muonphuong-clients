@@ -10,6 +10,15 @@
             </li>
         </ul>
 
+        @if(session('message'))
+            <div class="alert alert-success text-success my-1 p-2">
+                {{session('message')}}
+                <button type="button" class="close btn-close-message" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+        
         <div class="tab-content tab-content-table">
             <div id="home" class="tab-pane active">
                 <div class="bg-eee border-ff6600">
@@ -89,13 +98,13 @@
                             </div>
                             <div class="form-group col-2">
                                 <label class="label">&nbsp;</label>
-                                <button type="button" class="btn btn-sm">
+                                <button type="button"  class="btn btn-sm">
                                     <i class="far fa-file-excel"></i> Xuất excel
                                 </button>
                             </div>
                             <div class="form-group col-2">
                                 <label class="label">&nbsp;</label>
-                                <button type="button" class="btn btn-sm">
+                                <button type="button" class="btn btn-sm" id="yeucauphat">
                                     <i class="fas fa-paper-plane"></i> Yêu cầu phát
                                 </button>
                             </div>

@@ -75,6 +75,7 @@
 <script src="{{asset('public/clients/library/jquery-ui/jquery-ui.min.js')}}"></script>
 <script src="{{asset('public/clients/library/bootstraps/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('public/clients/library/fontawesome/js/all.min.js')}}"></script>
+<script src="{{asset('public/clients/library/bootbox/bootbox.min.js')}}"></script>
 {{-- <script src="{{asset('public/clients/library/datatables/js/jquery.dataTables.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/dataTables.buttons.min.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/jszip.min.js')}}"></script>
