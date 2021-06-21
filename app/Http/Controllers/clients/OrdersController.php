@@ -22,7 +22,6 @@ class OrdersController extends Controller
         $intLimit =  30;
         $strCodeCustomer = Auth::user()["code_customer"];
         $arrListAddress = Address::where('code_customer', $strCodeCustomer)->get();
-        $arrListOrders = Order::where(['is_deleted' => 0, 'code_customer' => $strCodeCustomer])->paginate($intLimit);
         $arrData = [];
         if(!empty($arrListAddress)){
             foreach ($arrListAddress as $item) {
@@ -30,82 +29,75 @@ class OrdersController extends Controller
                 if(!empty($strAddress)) $arrData['address'][$item->id] = $strAddress;
             }
         }
-        $arrData['orders'] = $arrListOrders;
-        return view('clients.orders.index')->with('arrData', $arrData);
-    }
+        $param = [];
 
-    public function postSearchIndex(Request $request){
-        $serviveQueryOrder = Order::query();
-        if ($request->input('code_az')) {
-            $serviveQueryOrder->where('code_az', 'LIKE', '%' .$request->input('code_az'). '%');
-        }
-
-        if ($request->input('city')) {
-            $serviveQueryOrder->where('city', $request->input('city'));
+        // CHƯƠNG TRÌNH QUERY ORDER
+        $serviveQueryOrder = Order::query(); 
+        $param['code_az'] = '';
+        if (!empty($_GET['code_az'])) {
+            $param['code_az'] =  $_GET['code_az'];
+            $serviveQueryOrder->where('code_az', 'LIKE', '%' .$_GET['code_az']. '%');
         }
 
-        if ($request->input('district')) {
-            $serviveQueryOrder->where('district', $request->input('district'));
+        $param['city'] = '';
+        if (!empty($_GET['city'])) {
+            $param['city'] =  $_GET['city'];
+            $serviveQueryOrder->where('city', $_GET['city']);
         }
 
-        if ($request->input('ward')) {
-            $serviveQueryOrder->where('ward', $request->input('ward'));
+        $param['district'] = '';
+        if (!empty($_GET['district'])) {
+            $param['district'] =  $_GET['district'];
+            $serviveQueryOrder->where('district', $_GET['district']);
         }
 
-        if ($request->input('dateEnd') && $request->input('dateBegin')) {
-            $strDateBegin = date("Y-m-d H:i:s", strtotime($request->input('dateBegin')." 00:00:00"));
-            $strDateEnd = date("Y-m-d H:i:s", strtotime($request->input('dateEnd')." 23:59:59"));
-            $serviveQueryOrder->where("enter_date <= $strDateBegin AND enter_date >= $strDateEnd");
+        $param['ward'] = '';
+        if (!empty($_GET['ward'])) {
+            $param['ward'] =  $_GET['ward'];
+            $serviveQueryOrder->where('ward', $_GET['ward']);
+        }
+        
+        $param['dateBegin'] = '';
+        $param['dateEnd'] = '';
+        if (!empty($_GET['dateEnd']) && !empty($_GET['dateBegin'])) {
+            $param['dateEnd'] =  $_GET['dateEnd'];
+            $param['dateBegin'] =  $_GET['dateBegin'];
+            $strDateBegin = date("Y-m-d H:i:s", strtotime($_GET['dateEnd']." 00:00:00"));
+            $strDateEnd = date("Y-m-d H:i:s", strtotime($_GET['dateBegin']." 23:59:59"));
+            $serviveQueryOrder->where("enter_date", ">=", $strDateBegin);
+            $serviveQueryOrder->where("enter_date", "<=", $strDateEnd);
         }
 
-        if ($request->input('type')) {
-            $serviveQueryOrder->where('type', $request->input('type'));
+        $param['type'] = '';
+        if (!empty($_GET['type'])) {
+            $param['type'] =  $_GET['type'];
+            $serviveQueryOrder->where('type', $_GET['type']);
         }
-        if ($request->input('status')) {
-            $serviveQueryOrder->where('status', $request->input('status'));
+
+        $param['status'] = '';
+        if (!empty($_GET['status'])) {
+            $param['status'] =  $_GET['status'];
+            $serviveQueryOrder->where('status', $_GET['status']);
         }
-        if ($request->input('address_customer')) {
-            $serviveQueryOrder->where('address_customer', $request->input('address_customer'));
+
+        $param['address_id'] = '';
+        if (!empty($_GET['address_id'])) {
+            $param['address_id'] =  $_GET['address_id'];
+            $serviveQueryOrder->where('address_id', $_GET['address_id']);
         }
-        if ($request->input('is_deleted')) {
-            $serviveQueryOrder->where('is_deleted', 0);
-        }
+
         $strCodeCustomer = Auth::user()["code_customer"];
-        if ($request->input('code_customer')) {
+        $param['code_customer'] = '';
+        if (!empty($_GET['code_customer'])) {
+            $param['code_customer'] =  $_GET['code_customer'];
             $serviveQueryOrder->where('code_customer', $strCodeCustomer);
         }
-
-        //  do some thing data
-        $arrListOrders = $serviveQueryOrder->get();
-        $arrData = [];
-        if(!empty($arrListOrders)){
-            foreach ($arrListOrders as $key => $item) {
-                $arrData[] = [ 
-                    $key+1, 
-                    $item['code_az'], 
-                    $item['full_name_b2c'], 
-                    $item['phone_b2c'],
-                    $item['packages'],
-                    $item['weight'].'<sub>gram</sub>',
-                    General::$arrTypeShip[$item['type']],
-                    General::$arrStatusOrder[$item['status']],
-                    ReadAddress::getCity($item['city']),
-                    ReadAddress::getDistrict($item['district']),
-                    ReadAddress::getWard($item['ward']),
-                    $item['into_money'].'<sup>đ</sup>',
-                    $item['enter_date'],
-                ];
-            }
-        }
-
-        $arrReponse = [
-            'success' => true,
-            'code' => 200,
-            'messenger' => 'Cập nhật dữ liệu thành công',
-            'data' => $arrData,
-            'error' => []
-        ];
-        return response()->json($arrReponse, 200);
+        
+        $serviveQueryOrder->where('is_deleted', 0);
+        $arrListOrders = $serviveQueryOrder->paginate($intLimit);
+        $arrData['orders'] = $arrListOrders;
+        $arrData['param'] = $param;
+        return view('clients.orders.index')->with('arrData', $arrData);
     }
     
     public function add(){

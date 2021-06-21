@@ -144,46 +144,46 @@ $(document).ready(function() {
         altFormat: "dd-mm-yy",
     });
 
-    var tableSearchData = $('#data-tabel-search').DataTable({
-        "ajax": {
-            url: url_base + 'theo-doi-don-van-search',
-            dataType: 'json',
-            type: 'POST',
-            crossDomain: true,
-            data: function(d) {
-                $('form#form-search-order').serialize();
-            }
-        },
-        "order": [],
-        "dom": 'Bfrtip',
-        "buttons": ['copyHtml5', 'excelHtml5', 'csvHtml5', 'print'],
-        "pageLength": 10,
-        "pagingType": "full_numbers",
-        "language": {
-            "decimal": "",
-            "emptyTable": "Thông tin không tồn tại",
-            "info": "Hiển từ trang _START_ đến trang _END_ tất cả _TOTAL_ mục",
-            "infoEmpty": "Không tồn tại thông tin nào",
-            "infoFiltered": "(filtered from _MAX_ total entries)",
-            "infoPostFix": "",
-            "thousands": ",",
-            "lengthMenu": "Hiển thị _MENU_ mục",
-            "loadingRecords": "Đang tải xuống...",
-            "processing": "Đang tải xuống...",
-            "search": "Tìm nhanh:",
-            "zeroRecords": "No matching records found",
-            "paginate": {
-                "first": "Tiếp",
-                "last": "Trước",
-                "next": "Trang Tiếp",
-                "previous": "Trang Trước"
-            },
-            "aria": {
-                "sortAscending": ": Kích hoạt tăng dần",
-                "sortDescending": ": Kích hoạt giảm dần"
-            }
-        },
-    });
+    // var tableSearchData = $('#data-tabel-search').DataTable({
+    //     "ajax": {
+    //         url: url_base + 'theo-doi-don-van-search',
+    //         dataType: 'json',
+    //         type: 'POST',
+    //         crossDomain: true,
+    //         data: function(d) {
+    //             $('form#form-search-order').serialize();
+    //         }
+    //     },
+    //     "order": [],
+    //     "dom": 'Bfrtip',
+    //     "buttons": ['copyHtml5', 'excelHtml5', 'csvHtml5', 'print'],
+    //     "pageLength": 10,
+    //     "pagingType": "full_numbers",
+    //     "language": {
+    //         "decimal": "",
+    //         "emptyTable": "Thông tin không tồn tại",
+    //         "info": "Hiển từ trang _START_ đến trang _END_ tất cả _TOTAL_ mục",
+    //         "infoEmpty": "Không tồn tại thông tin nào",
+    //         "infoFiltered": "(filtered from _MAX_ total entries)",
+    //         "infoPostFix": "",
+    //         "thousands": ",",
+    //         "lengthMenu": "Hiển thị _MENU_ mục",
+    //         "loadingRecords": "Đang tải xuống...",
+    //         "processing": "Đang tải xuống...",
+    //         "search": "Tìm nhanh:",
+    //         "zeroRecords": "No matching records found",
+    //         "paginate": {
+    //             "first": "Tiếp",
+    //             "last": "Trước",
+    //             "next": "Trang Tiếp",
+    //             "previous": "Trang Trước"
+    //         },
+    //         "aria": {
+    //             "sortAscending": ": Kích hoạt tăng dần",
+    //             "sortDescending": ": Kích hoạt giảm dần"
+    //         }
+    //     },
+    // });
 
 
 
