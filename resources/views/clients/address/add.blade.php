@@ -124,7 +124,7 @@
                 <thead class="table-header">
                     <tr>
                         <th>STT</th>
-                        <th>Tên khách hàng</th>
+                        <th>Loại khách hàng</th>
                         <th>Số điện thoại</th>
                         <th>Tên địa chỉ</th>
                         <th>Địa chỉ</th>
@@ -163,7 +163,7 @@
                 <tfoot class="table-header">
                     <tr>
                         <th>STT</th>
-                        <th>Tên khách hàng</th>
+                        <th>Loại khách hàng</th>
                         <th>Số điện thoại</th>
                         <th>Tên địa chỉ</th>
                         <th>Địa chỉ</th>

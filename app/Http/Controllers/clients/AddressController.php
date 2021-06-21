@@ -30,7 +30,7 @@ class AddressController extends Controller
     public function postAdd(Request $request){
         set_time_limit(0);
         $rules = [
-            'address_customer' => 'required',
+            // 'address_customer' => 'required',
             'name_address' => 'required',
             'address' => 'required',
             'city' => 'required|numeric',
@@ -41,7 +41,7 @@ class AddressController extends Controller
         ];
 
         $messages = [
-            'address_customer.required' => 'Cần chọn địa chỉ tạo đơn vận',
+            // 'address_customer.required' => 'Cần chọn địa chỉ tạo đơn vận',
             'address.required' => 'Cần nhập vào địa chỉ',
             'name_address.required' => 'Cần nhập vào tên địa chỉ',
             'city.required' => 'Cần chọn thành phố',
@@ -50,16 +50,16 @@ class AddressController extends Controller
             'district.numeric' => 'Địa chỉ quận huyện không hợp lệ',
             'ward.required' => 'Cần chọn xã phường',
             'ward.numeric' => 'Địa chỉ xã phường không hợp lệ',
-            'address_of.required' => 'Cần nhập vào tên khách hàng',
+            'address_of.required' => 'Cần chọn loại khách hàng',
             'phone.required' => 'Cần nhập vào số điện thoại'
         ];
-        // $validator = Validator::make($request->all(), $rules, $messages);
-        // if ($validator->fails()) {
-        //     return redirect()->route('address-add')->withErrors($validator)->withInput();
-        // }
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return redirect()->route('address-add')->withErrors($validator)->withInput();
+        }
 
             
-        $intAddressCustomer = empty($request->input('address_customer'))?'':trim($request->input('address_customer'));
+        // $intAddressCustomer = empty($request->input('address_customer'))?'':trim($request->input('address_customer'));
         $strAddress = empty($request->input('address'))?'':trim($request->input('address'));
         $strAddressOf = empty($request->input('address_of'))?'':trim($request->input('address_of'));
         $intCity = empty($request->input('city'))?'':trim($request->input('city'));
