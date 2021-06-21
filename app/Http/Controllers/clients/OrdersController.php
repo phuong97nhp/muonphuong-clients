@@ -19,9 +19,10 @@ class OrdersController extends Controller
 {
     // 1. Chờ xữ lý, 2. Yêu Cầu phát, 3. Chờ phát, 4 Đã phát thành công, 5. Hoàn lại đơn hàng
     public function index (){
-        $intLimit =  50;
+        $intLimit =  30;
         $strCodeCustomer = Auth::user()["code_customer"];
         $arrListAddress = Address::where('code_customer', $strCodeCustomer)->get();
+        $arrListOrders = Order::where(['is_deleted' => 0, 'code_customer' => $strCodeCustomer])->paginate($intLimit);
         $arrData = [];
         if(!empty($arrListAddress)){
             foreach ($arrListAddress as $item) {
@@ -29,6 +30,7 @@ class OrdersController extends Controller
                 if(!empty($strAddress)) $arrData['address'][$item->id] = $strAddress;
             }
         }
+        $arrData['orders'] = $arrListOrders;
         return view('clients.orders.index')->with('arrData', $arrData);
     }
 
