@@ -200,8 +200,8 @@
                             <div class="col-md-12">
                                 <div class="d-flex justify-content-center">
                                     <div class="custom-file col-md-3">
-                                        <input type="file" name="customFile" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label label " for="customFile">Cập nhật đơn vận
+                                        <input type="file" name="fileExcel" class="custom-file-input" id="fileExcel">
+                                        <label class="custom-file-label label " for="fileExcel">Cập nhật đơn vận
                                                     mới</label>
                                     </div>
                                 </div>
