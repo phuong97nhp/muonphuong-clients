@@ -42,6 +42,14 @@ libssl-dev \
 openssl \
 supervisor
 
+#install some base extensions
+RUN apt-get install -y \
+      libzip-dev \
+       zip \
+    #  chỉ dành cho php < v4
+    # && docker-php-ext-configure zip --with-libzip \
+    && docker-php-ext-install zip
+
 # Install PHP extensions
 RUN pecl install sqlsrv pdo_sqlsrv 
 

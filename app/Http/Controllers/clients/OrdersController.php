@@ -19,7 +19,7 @@ class OrdersController extends Controller
 {
     // 1. Chờ xữ lý, 2. Yêu Cầu phát, 3. Chờ phát, 4 Đã phát thành công, 5. Hoàn lại đơn hàng
     public function index (){
-        $intLimit =  50;
+        $intLimit =  30;
         $strCodeCustomer = Auth::user()["code_customer"];
         $arrListAddress = Address::where('code_customer', $strCodeCustomer)->get();
         $arrData = [];
@@ -29,78 +29,110 @@ class OrdersController extends Controller
                 if(!empty($strAddress)) $arrData['address'][$item->id] = $strAddress;
             }
         }
+        $param = [];
+
+        // CHƯƠNG TRÌNH QUERY ORDER
+        $serviveQueryOrder = Order::query(); 
+        $param['code_az'] = '';
+        if (!empty($_GET['code_az'])) {
+            $param['code_az'] =  $_GET['code_az'];
+            $serviveQueryOrder->where('code_az', 'LIKE', '%' .$_GET['code_az']. '%');
+        }
+
+        $param['city'] = '';
+        if (!empty($_GET['city'])) {
+            $param['city'] =  $_GET['city'];
+            $serviveQueryOrder->where('city', $_GET['city']);
+        }
+
+        $param['district'] = '';
+        if (!empty($_GET['district'])) {
+            $param['district'] =  $_GET['district'];
+            $serviveQueryOrder->where('district', $_GET['district']);
+        }
+
+        $param['ward'] = '';
+        if (!empty($_GET['ward'])) {
+            $param['ward'] =  $_GET['ward'];
+            $serviveQueryOrder->where('ward', $_GET['ward']);
+        }
+        
+        $param['dateBegin'] = '';
+        $param['dateEnd'] = '';
+        if (!empty($_GET['dateEnd']) && !empty($_GET['dateBegin'])) {
+            $param['dateEnd'] =  $_GET['dateEnd'];
+            $param['dateBegin'] =  $_GET['dateBegin'];
+            $strDateBegin = date("Y-m-d H:i:s", strtotime($_GET['dateEnd']." 00:00:00"));
+            $strDateEnd = date("Y-m-d H:i:s", strtotime($_GET['dateBegin']." 23:59:59"));
+            $serviveQueryOrder->where("enter_date", ">=", $strDateBegin);
+            $serviveQueryOrder->where("enter_date", "<=", $strDateEnd);
+        }
+
+        $param['type'] = '';
+        if (!empty($_GET['type'])) {
+            $param['type'] =  $_GET['type'];
+            $serviveQueryOrder->where('type', $_GET['type']);
+        }
+
+        $param['status'] = '';
+        if (!empty($_GET['status'])) {
+            $param['status'] =  $_GET['status'];
+            $serviveQueryOrder->where('status', $_GET['status']);
+        }
+
+        $param['address_id'] = '';
+        if (!empty($_GET['address_id'])) {
+            $param['address_id'] =  $_GET['address_id'];
+            $serviveQueryOrder->where('address_id', $_GET['address_id']);
+        }
+
+        $strCodeCustomer = Auth::user()["code_customer"];
+        $param['code_customer'] = '';
+        if (!empty($_GET['code_customer'])) {
+            $param['code_customer'] =  $_GET['code_customer'];
+            $serviveQueryOrder->where('code_customer', $strCodeCustomer);
+        }
+        
+        $serviveQueryOrder->where('is_deleted', 0);
+        $arrListOrders = $serviveQueryOrder->get();
+        $arrData['orders'] = $arrListOrders;
+        $arrData['param'] = $param;
         return view('clients.orders.index')->with('arrData', $arrData);
     }
 
-    public function postSearchIndex(Request $request){
-        $serviveQueryOrder = Order::query();
-        if ($request->input('code_az')) {
-            $serviveQueryOrder->where('code_az', 'LIKE', '%' .$request->input('code_az'). '%');
-        }
-
-        if ($request->input('city')) {
-            $serviveQueryOrder->where('city', $request->input('city'));
-        }
-
-        if ($request->input('district')) {
-            $serviveQueryOrder->where('district', $request->input('district'));
-        }
-
-        if ($request->input('ward')) {
-            $serviveQueryOrder->where('ward', $request->input('ward'));
-        }
-
-        if ($request->input('dateEnd') && $request->input('dateBegin')) {
-            $strDateBegin = date("Y-m-d H:i:s", strtotime($request->input('dateBegin')." 00:00:00"));
-            $strDateEnd = date("Y-m-d H:i:s", strtotime($request->input('dateEnd')." 23:59:59"));
-            $serviveQueryOrder->where("enter_date <= $strDateBegin AND enter_date >= $strDateEnd");
-        }
-
-        if ($request->input('type')) {
-            $serviveQueryOrder->where('type', $request->input('type'));
-        }
-        if ($request->input('status')) {
-            $serviveQueryOrder->where('status', $request->input('status'));
-        }
-        if ($request->input('address_customer')) {
-            $serviveQueryOrder->where('address_customer', $request->input('address_customer'));
-        }
-        if ($request->input('is_deleted')) {
-            $serviveQueryOrder->where('is_deleted', 0);
+    public function yeuCauPhat(Request $request){
+        $intStatus = $request->input('status');
+        if(empty($intStatus) || $intStatus != 2 ){
+            $arrReponse = [
+                'success' => false,
+                'code' => 200,
+                'messenger' => 'Cần chọn trạng thái là yêu cầu phát trước khi thực thi lệnh này.',
+                'data' => [],
+                'error' => []
+            ];
+            return response()->json($arrReponse, 200);
         }
         $strCodeCustomer = Auth::user()["code_customer"];
-        if ($request->input('code_customer')) {
-            $serviveQueryOrder->where('code_customer', $strCodeCustomer);
-        }
-
-        //  do some thing data
-        $arrListOrders = $serviveQueryOrder->get();
-        $arrData = [];
-        if(!empty($arrListOrders)){
-            foreach ($arrListOrders as $key => $item) {
-                $arrData[] = [ 
-                    $key+1, 
-                    $item['code_az'], 
-                    $item['full_name_b2c'], 
-                    $item['phone_b2c'],
-                    $item['packages'],
-                    $item['weight'].'<sub>gram</sub>',
-                    General::$arrTypeShip[$item['type']],
-                    General::$arrStatusOrder[$item['status']],
-                    ReadAddress::getCity($item['city']),
-                    ReadAddress::getDistrict($item['district']),
-                    ReadAddress::getWard($item['ward']),
-                    $item['into_money'].'<sup>đ</sup>',
-                    $item['enter_date'],
-                ];
-            }
-        }
+        $statusCheck = Order::where('status', 1)
+                        ->where('is_deleted', 0)
+                        ->where('code_customer', $strCodeCustomer)
+                        ->update(['status' => 2]);
+        if($statusCheck){
+            $arrReponse = [
+                'success' => true,
+                'code' => 200,
+                'messenger' => 'Cập nhật đơn vận thành công.',
+                'data' => [],
+                'error' => []
+            ];
+            return response()->json($arrReponse, 200);
+        } 
 
         $arrReponse = [
-            'success' => true,
+            'success' => false,
             'code' => 200,
-            'messenger' => 'Cập nhật dữ liệu thành công',
-            'data' => $arrData,
+            'messenger' => 'Kiểm tra lại bạn không có đơn hàng nào đang chờ phát.',
+            'data' => [],
             'error' => []
         ];
         return response()->json($arrReponse, 200);

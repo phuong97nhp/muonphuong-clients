@@ -144,48 +144,81 @@ $(document).ready(function() {
         altFormat: "dd-mm-yy",
     });
 
-    var tableSearchData = $('#data-tabel-search').DataTable({
-        "ajax": {
-            url: url_base + 'theo-doi-don-van-search',
-            dataType: 'json',
-            type: 'POST',
-            crossDomain: true,
-            data: function(d) {
-                $('form#form-search-order').serialize();
-            }
-        },
-        "order": [],
+    // var tableSearchData = $('#data-tabel-search').DataTable({
+    //     "ajax": {
+    //         url: url_base + 'theo-doi-don-van-search',
+    //         dataType: 'json',
+    //         type: 'POST',
+    //         crossDomain: true,
+    //         data: function(d) {
+    //             $('form#form-search-order').serialize();
+    //         }
+    //     },
+    //     "order": [],
+    //     "dom": 'Bfrtip',
+    //     "buttons": ['copyHtml5', 'excelHtml5', 'csvHtml5', 'print'],
+    //     "pageLength": 10,
+    //     "pagingType": "full_numbers",
+    //     "language": {
+    //         "decimal": "",
+    //         "emptyTable": "Thông tin không tồn tại",
+    //         "info": "Hiển từ trang _START_ đến trang _END_ tất cả _TOTAL_ mục",
+    //         "infoEmpty": "Không tồn tại thông tin nào",
+    //         "infoFiltered": "(filtered from _MAX_ total entries)",
+    //         "infoPostFix": "",
+    //         "thousands": ",",
+    //         "lengthMenu": "Hiển thị _MENU_ mục",
+    //         "loadingRecords": "Đang tải xuống...",
+    //         "processing": "Đang tải xuống...",
+    //         "search": "Tìm nhanh:",
+    //         "zeroRecords": "No matching records found",
+    //         "paginate": {
+    //             "first": "Tiếp",
+    //             "last": "Trước",
+    //             "next": "Trang Tiếp",
+    //             "previous": "Trang Trước"
+    //         },
+    //         "aria": {
+    //             "sortAscending": ": Kích hoạt tăng dần",
+    //             "sortDescending": ": Kích hoạt giảm dần"
+    //         }
+    //     },
+    // });
+    $('#data-tabel-search').DataTable({
         "dom": 'Bfrtip',
         "buttons": ['copyHtml5', 'excelHtml5', 'csvHtml5', 'print'],
-        "pageLength": 10,
-        "pagingType": "full_numbers",
-        "language": {
-            "decimal": "",
-            "emptyTable": "Thông tin không tồn tại",
-            "info": "Hiển từ trang _START_ đến trang _END_ tất cả _TOTAL_ mục",
-            "infoEmpty": "Không tồn tại thông tin nào",
-            "infoFiltered": "(filtered from _MAX_ total entries)",
-            "infoPostFix": "",
-            "thousands": ",",
-            "lengthMenu": "Hiển thị _MENU_ mục",
-            "loadingRecords": "Đang tải xuống...",
-            "processing": "Đang tải xuống...",
-            "search": "Tìm nhanh:",
-            "zeroRecords": "No matching records found",
-            "paginate": {
-                "first": "Tiếp",
-                "last": "Trước",
-                "next": "Trang Tiếp",
-                "previous": "Trang Trước"
-            },
-            "aria": {
-                "sortAscending": ": Kích hoạt tăng dần",
-                "sortDescending": ": Kích hoạt giảm dần"
-            }
-        },
+        "pageLength": 50,
     });
 
-
+    $(document).on("click", "#yeucauphat", function() {
+        var params = $('#form-search-order').serialize();
+        var status = $('#status').children("option:selected").val();
+        $("#yeucauphat").html('<i class="fas fa-circle-notch fa-spin"></i> Đang thực thi...');
+        $.ajax({
+            url: url_base + 'yeu-cau-phat',
+            type: 'POST',
+            dataType: 'json',
+            data: { status: status },
+            success: function(result) {
+                if (result.constructor === String) {
+                    result = JSON.parse(result);
+                }
+                if (result.success == true) {
+                    $("#yeucauphat").html('<i class="fas fa-paper-plane"></i> Yêu cầu phát');
+                    return bootbox.alert({
+                        message: result.messenger,
+                        backdrop: true
+                    });
+                } else {
+                    $("#yeucauphat").html('<i class="fas fa-paper-plane"></i> Yêu cầu phát');
+                    return bootbox.alert({
+                        message: result.messenger,
+                        backdrop: true
+                    });
+                }
+            }
+        });
+    });
 
     function dataTabelSearch() {
         var weight = 132;
