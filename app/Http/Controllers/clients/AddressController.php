@@ -51,13 +51,12 @@ class AddressController extends Controller
             'ward.required' => 'Cần chọn xã phường',
             'ward.numeric' => 'Địa chỉ xã phường không hợp lệ',
             'address_of.required' => 'Cần nhập vào tên khách hàng',
-            'phone.required' => 'Cần nhập vào số điện thoại',
+            'phone.required' => 'Cần nhập vào số điện thoại'
         ];
-        echo 
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()) {
-            return redirect()->route('address-add')->withErrors($validator)->withInput();
-        }
+        // $validator = Validator::make($request->all(), $rules, $messages);
+        // if ($validator->fails()) {
+        //     return redirect()->route('address-add')->withErrors($validator)->withInput();
+        // }
 
             
         $intAddressCustomer = empty($request->input('address_customer'))?'':trim($request->input('address_customer'));

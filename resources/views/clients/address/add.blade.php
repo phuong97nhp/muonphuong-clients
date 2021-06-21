@@ -26,25 +26,6 @@
                             <p class="error-warning">{{$errors->first('name_address')}}</p>
                             @endif
                         </div>
-                        <div class="form-group col-3">
-                            <label class="label" for="address_of">
-                                Tên khách hàng <span class="text-danger text-weight-600">(*)</span>
-                            </label>
-                            <select name="address_customer" class="form-control rounded form-control-sm"
-                                id="address_customer">
-                                <option>=== Chọn địa chỉ tạo đơn vận ===</option>
-                                @if ($arrData["address"])
-                                @foreach ($arrData["address"] as $key => $item)
-                                <option @if(old('address_customer')) {{(old('address_customer') == $key)?'selected':''}}
-                                    @else {{(Auth::user()['address_id'] == $key)?'selected':''}} @endif
-                                    value="{{ $key }}">{{ $item }}</option>
-                                @endforeach
-                                @endif
-                            </select>
-                            @if($errors->has('address_of'))
-                            <p class="error-warning">{{$errors->first('address_of')}}</p>
-                            @endif
-                        </div>
 
                         <div class="form-group col-3">
                             <label class="label" for="phone">Số điện thoại <span
@@ -65,6 +46,20 @@
                             <p class="error-warning">{{$errors->first('website')}}</p>
                             @endif
                         </div>
+                        <div class="form-group col-3">
+                            <label class="label" for="address_of">
+                                Loại khách hàng <span class="text-danger text-weight-600">(*)</span>
+                            </label>
+                            <select name="address_of" class="form-control rounded form-control-sm" id="address_of">
+                                <option>=== Loại khách hàng ===</option>
+                                <option {{(old('address_of') == 'Customer')?'selected':''}} value="Customer">Customer</option>
+                                <option {{(old('address_of') == 'Post')?'selected':''}} value="Post">Post</option>
+                            </select>
+                            @if($errors->has('address_of'))
+                            <p class="error-warning">{{$errors->first('address_of')}}</p>
+                            @endif
+                        </div>
+
                         <div class="form-group col-3">
                             <label class="label" for="address">Địa chỉ <span
                                     class="text-danger text-weight-600">(*)</span></label>
@@ -182,13 +177,7 @@
                 </tfoot>
             </table>
             <div class="d-flex justify-content-center">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Trang trước</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Trang sau</a></li>
-                </ul>
+                {{ $arrData['address']->links("pagination::bootstrap-4") }}
             </div>
         </div>
     </div>
