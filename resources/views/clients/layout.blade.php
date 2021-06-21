@@ -9,8 +9,8 @@
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{asset('public/clients/library/fontawesome/css/all.min.css')}}">
-    {{-- <link rel="stylesheet" href="{{asset('public/clients/library/datatables/css/dataTables.foundation.min.css')}}">
-    <link rel="stylesheet" href="{{asset('public/clients/library/datatables/css/dataTables.bootstrap4.min.css')}}"> --}}
+    <link rel="stylesheet" href="{{asset('public/clients/library/datatables/css/dataTables.foundation.min.css')}}">
+    <link rel="stylesheet" href="{{asset('public/clients/library/datatables/css/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('public/clients/library/jquery-ui-themes/themes/base/jquery-ui.min.css')}}">
     <link rel="stylesheet" href="{{asset('public/clients/library/jquery-ui/jquery-ui.min.css')}}">
     <link rel="stylesheet" href="{{asset('public/clients/my/styles/all.css')}}">
@@ -76,15 +76,15 @@
 <script src="{{asset('public/clients/library/bootstraps/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('public/clients/library/fontawesome/js/all.min.js')}}"></script>
 <script src="{{asset('public/clients/library/bootbox/bootbox.min.js')}}"></script>
-{{-- <script src="{{asset('public/clients/library/datatables/js/jquery.dataTables.js')}}"></script>
+<script src="{{asset('public/clients/library/datatables/js/jquery.dataTables.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/dataTables.buttons.min.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/jszip.min.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/pdfmake.min.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/vfs_fonts.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/buttons.html5.min.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
-<script src="{{asset('public/clients/library/datatables/js/buttons.print.min.js')}}"></script> --}}
-<script src="{{asset('public/clients/my/scripts/all.js?v=1')}}"></script>
+<script src="{{asset('public/clients/library/datatables/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('public/clients/my/scripts/all.js')}}"></script>
 
 </html>
 

@@ -96,21 +96,24 @@
                                     <i class="fas fa-search"></i> Tìm kiếm
                                 </button>
                             </div>
+                            <div class="form-group col-2">
+                                <label class="label">&nbsp;</label>
+                                <button type="button" class="btn btn-sm btn-line" id="yeucauphat">
+                                    <i class="fas fa-paper-plane"></i> Yêu cầu phát
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <form action="/xuat-file-excel">
+        {{-- <form action="/xuat-file-excel">
             <div class="col-12 mt-2 mb-1">
                 <button type="button"  class="btn btn-sm btn-line">
                     <i class="far fa-file-excel"></i> Xuất excel
                 </button>
-                <button type="button" class="btn btn-sm btn-line" id="yeucauphat">
-                    <i class="fas fa-paper-plane"></i> Yêu cầu phát
-                </button>
             </div>
-        </form>
+        </form> --}}
         <div class="row">
             <div class="col-12 mt-2">
                 <table class="table table-striped" id="data-tabel-search">
@@ -130,7 +133,7 @@
                             <th>Tỉnh/thành phố</th>
                             <th>Thành tiền tạm tính</th>
                             <th>Thời gian tạo</th>
-                            <!-- <th>Trạng thái</th> -->
+                            <th>Trạng thái</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
@@ -143,7 +146,7 @@
                                     <td class="text-left">{{$item['full_name_b2c']}}</td>
                                     <td class="text-center">{{$item['phone_b2c']}}</td>
                                     <td class="text-center">{{$item['packages']}}</td>
-                                    <td class="text-center">{{$item['weight']}} <sub>gram</sub></td>
+                                    <td class="text-center">{{$item['weight']}} <sub>g</sub></td>
                                     <td class="text-center">{{$item['type']}}</td>
                                     <td class="text-center">{{$item['payments']}}</td>
                                     <td class="text-center">{{App\Library\Address\ReadAddress::getWard($item['ward'])}}</td>
@@ -151,6 +154,7 @@
                                     <td class="text-center">{{App\Library\Address\ReadAddress::getCity($item['city'])}}</td>
                                     <td class="text-center">{{$item['into_money']}} <sup>đ</sup></td>
                                     <td class="text-center">{{$item['enter_date']}}</td>
+                                    <td class="text-center">{{App\Library\General::$arrStatusOrder[$item['status']]}}</td>
                                 </tr>
                             @endforeach
                         @else
@@ -175,11 +179,12 @@
                             <td>Tỉnh/tdành phố</td>
                             <td>Thành tiền tạm tính</td>
                             <td>Thời gian tạo</td>
+                            <td>Trạng thái</td>
                         </tr>
                     </tfoot>
                 </table>
-                <div class="d-flex justify-content-center">
-                    {{ $arrData['orders']->links("pagination::bootstrap-4") }}
+                <div class="d-flex justify-content-center mt-2">
+                    {{-- {{ $arrData['orders']->links("pagination::bootstrap-4") }} --}}
                 </div>
             </div>
         </div>

@@ -94,13 +94,24 @@ class OrdersController extends Controller
         }
         
         $serviveQueryOrder->where('is_deleted', 0);
-        $arrListOrders = $serviveQueryOrder->paginate($intLimit);
+        $arrListOrders = $serviveQueryOrder->get();
         $arrData['orders'] = $arrListOrders;
         $arrData['param'] = $param;
         return view('clients.orders.index')->with('arrData', $arrData);
     }
 
     public function yeuCauPhat(Request $request){
+        $intStatus = $request->input('status');
+        if(empty($intStatus) || $intStatus != 2 ){
+            $arrReponse = [
+                'success' => false,
+                'code' => 200,
+                'messenger' => 'Cần chọn trạng thái là yêu cầu phát trước khi thực thi lệnh này.',
+                'data' => [],
+                'error' => []
+            ];
+            return response()->json($arrReponse, 200);
+        }
         $strCodeCustomer = Auth::user()["code_customer"];
         $statusCheck = Order::where('status', 1)
                         ->where('is_deleted', 0)

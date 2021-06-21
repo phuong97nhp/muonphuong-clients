@@ -184,24 +184,33 @@ $(document).ready(function() {
     //         }
     //     },
     // });
+    $('#data-tabel-search').DataTable({
+        "dom": 'Bfrtip',
+        "buttons": ['copyHtml5', 'excelHtml5', 'csvHtml5', 'print'],
+        "pageLength": 50,
+    });
 
     $(document).on("click", "#yeucauphat", function() {
         var params = $('#form-search-order').serialize();
+        var status = $('#status').children("option:selected").val();
+        $("#yeucauphat").html('<i class="fas fa-circle-notch fa-spin"></i> Đang thực thi...');
         $.ajax({
             url: url_base + 'yeu-cau-phat',
             type: 'POST',
             dataType: 'json',
-            data: {},
+            data: { status: status },
             success: function(result) {
                 if (result.constructor === String) {
                     result = JSON.parse(result);
                 }
                 if (result.success == true) {
+                    $("#yeucauphat").html('<i class="fas fa-paper-plane"></i> Yêu cầu phát');
                     return bootbox.alert({
                         message: result.messenger,
                         backdrop: true
                     });
                 } else {
+                    $("#yeucauphat").html('<i class="fas fa-paper-plane"></i> Yêu cầu phát');
                     return bootbox.alert({
                         message: result.messenger,
                         backdrop: true
