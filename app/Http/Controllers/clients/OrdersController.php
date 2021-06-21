@@ -100,6 +100,33 @@ class OrdersController extends Controller
         return view('clients.orders.index')->with('arrData', $arrData);
     }
 
+    public function postImport(Request $request){
+        set_time_limit(0);
+        $rules = [
+            'fileExcel' => 'required|max:5|mimes:xlsx,xls,csv'
+        ];
+
+        $messages = [
+            'fileExcel.' => 'Cần chọn file excel',
+            'fileExcel.max' => 'Kích thước file excel không hợp lệ',
+            'fileExcel.mimes' => 'Đinh dạng file excel của bạn không chính xác',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect()->route('order-add')->withErrors($validator)->withInput();
+        }
+
+        if($validator->passes()){
+            $fileExcel = $request->file('fileExcel');
+            $arrExcel = Excel::import(new IProjectNames, $fileExcel);
+            return redirect()->back()->with(['message' => 'Upload dữ liệu thành công.']);
+        }else{
+            return redirect()->back()->with(['message' => $validator->errors()->all()]);
+        }
+    }
+
     public function exportDetailTracking(Request $request){
         try {
             if (!$request->isMethod('post')) {
