@@ -84,7 +84,7 @@
 <script src="{{asset('public/clients/library/datatables/js/buttons.html5.min.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/buttons.print.min.js')}}"></script> --}}
-<script src="{{asset('public/clients/my/scripts/all.js')}}"></script>
+<script src="{{asset('public/clients/my/scripts/all.js?v=1')}}"></script>
 
 </html>
 

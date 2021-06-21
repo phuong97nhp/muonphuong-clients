@@ -165,7 +165,7 @@
                             <td>STT</td>
                             <td>Mã bill</td>
                             <td>Tên người nhận</td>
-                            <td>Số điện tdoại</td>
+                            <td>Số điện thoại</td>
                             <td>Số kiện</td>
                             <td>Trọng lượng</td>
                             <td>Loại dịch vụ</td>

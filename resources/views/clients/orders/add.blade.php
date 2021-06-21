@@ -260,7 +260,7 @@
                             @endforeach
                         @else
                         <tr>
-                            <td colspan="10" ><p class="text-center">Không có dữ liệu</p></td>
+                            <td rowspan="10"><p class="text-center">Bạn không có đơn hàng nào đang chờ phát</p></td>
                         </tr>
                         @endif
                     </tbody>
