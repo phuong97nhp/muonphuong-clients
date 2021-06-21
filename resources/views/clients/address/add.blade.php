@@ -13,20 +13,64 @@
     <div class="tab-content tab-content-table">
         <div id="home" class="tab-pane active">
             <div class="bg-eee border-ff6600">
-                <form>
+                <form method="POST" action="{{url('/post-add-address')}}">
+                    @csrf
                     <div class="row p-2">
-                        <div class="form-group col-12">
-                            <label class="label" for="name_address">Địa chỉ<span
+                        <div class="form-group col-3">
+                            <label class="label" for="name_address">Tên địa chỉ <span
                                     class="text-danger text-weight-600">(*)</span></label>
                             <input id="name_address" type="text" class="form-control rounded form-control-sm"
-                                placeholder="Nhập vào tên địa chỉ (ví dụ Trà Sữa TocoToco)" name="name_address"
+                                placeholder="Nhập vào tên địa chỉ (Công ty A...)" name="name_address"
                                 value="{{old('name_address')}}">
                             @if($errors->has('name_address'))
                             <p class="error-warning">{{$errors->first('name_address')}}</p>
                             @endif
                         </div>
+
                         <div class="form-group col-3">
-                            <label class="label" for="city">Tỉnh/Thành phố:<span
+                            <label class="label" for="phone">Số điện thoại <span
+                                    class="text-danger text-weight-600">(*)</span></label>
+                            <input type="number" name="phone" class="form-control rounded
+                                            form-control-sm" placeholder="Nhập số điện thoại" name="phone"
+                                value="{{old('phone')}}">
+                            @if($errors->has('phone'))
+                            <p class="error-warning">{{$errors->first('phone')}}</p>
+                            @endif
+                        </div>
+                        <div class="form-group col-3">
+                            <label class="label" for="website">Website <span
+                                    class="text-danger text-weight-600"></span></label>
+                            <input id="website" type="text" class="form-control rounded form-control-sm"
+                                placeholder="Nhập vào địa chỉ website" name="website" value="{{old('website')}}">
+                            @if($errors->has('website'))
+                            <p class="error-warning">{{$errors->first('website')}}</p>
+                            @endif
+                        </div>
+                        <div class="form-group col-3">
+                            <label class="label" for="address_of">
+                                Loại khách hàng <span class="text-danger text-weight-600">(*)</span>
+                            </label>
+                            <select name="address_of" class="form-control rounded form-control-sm" id="address_of">
+                                <option>=== Loại khách hàng ===</option>
+                                <option {{(old('address_of') == 'Customer')?'selected':''}} value="Customer">Customer</option>
+                                <option {{(old('address_of') == 'Post')?'selected':''}} value="Post">Post</option>
+                            </select>
+                            @if($errors->has('address_of'))
+                            <p class="error-warning">{{$errors->first('address_of')}}</p>
+                            @endif
+                        </div>
+
+                        <div class="form-group col-3">
+                            <label class="label" for="address">Địa chỉ <span
+                                    class="text-danger text-weight-600">(*)</span></label>
+                            <input id="address" type="text" class="form-control rounded form-control-sm"
+                                placeholder="Nhập vào địa chỉ (nhà và đường)" name="address" value="{{old('address')}}">
+                            @if($errors->has('address'))
+                            <p class="error-warning">{{$errors->first('address')}}</p>
+                            @endif
+                        </div>
+                        <div class="form-group col-3">
+                            <label class="label" for="city">Tỉnh/Thành phố <span
                                     class="text-danger text-weight-600">(*)</span></label>
                             <select class="form-control rounded form-control-sm" name="city" id="city" @if(old('city'))
                                 idOldCity="{{old('city')}}" @endif>
@@ -38,7 +82,7 @@
                         </div>
 
                         <div class="form-group col-3">
-                            <label class="label" for="district">Quận/Huyện:<span
+                            <label class="label" for="district">Quận/Huyện <span
                                     class="text-danger text-weight-600">(*)</span></label>
                             <select class="form-control rounded form-control-sm" name="district" id="district"
                                 @if(old('district')) idOldDistrict="{{old('district')}}" @endif>
@@ -50,7 +94,7 @@
                         </div>
 
                         <div class="form-group col-3">
-                            <label class="label" for="ward">Xã/Phường:<span
+                            <label class="label" for="ward">Xã/Phường <span
                                     class="text-danger text-weight-600">(*)</span></label>
                             <select class="form-control rounded form-control-sm" name="ward" id="ward" @if(old('ward'))
                                 idOldWard="{{old('ward')}}" @endif>
@@ -60,41 +104,13 @@
                             <p class="error-warning">{{$errors->first('ward')}}</p>
                             @endif
                         </div>
-                        <div class="form-group col-3">
-                            <label class="label" for="address">Địa chỉ<span
-                                    class="text-danger text-weight-600">(*)</span></label>
-                            <input id="address" type="text" class="form-control rounded form-control-sm"
-                                placeholder="Nhập vào địa chỉ (nhà và đường)" name="address" value="{{old('address')}}">
-                            @if($errors->has('address'))
-                            <p class="error-warning">{{$errors->first('address')}}</p>
-                            @endif
-                        </div>
 
-                        <div class="form-group col-3">
-                            <label class="label" for="address_of">
-                                Tên người nhận<span class="text-danger text-weight-600">(*)</span>
-                            </label>
-                            <input type="text" id="address_of" class="form-control rounded
-                                form-control-sm" placeholder="Nhập tên người nhận hàng" name="address_of"
-                                value="{{old('address_of')}}">
-                            @if($errors->has('address_of'))
-                            <p class="error-warning">{{$errors->first('address_of')}}</p>
-                            @endif
-                        </div>
 
-                        <div class="form-group col-3">
-                            <label class="label" for="phone">Điện thoại người nhận<span
-                                    class="text-danger text-weight-600">(*)</span></label>
-                            <input type="number" name="phone" class="form-control rounded
-                                            form-control-sm" placeholder="Nhập số điện thoại" name="phone"
-                                value="{{old('phone')}}">
-                            @if($errors->has('phone'))
-                            <p class="error-warning">{{$errors->first('phone')}}</p>
-                            @endif
-                        </div>
-                        <div class="form-group col-2">
+
+                        <div class="form-group col-12">
                             <label class="label" for="">&nbsp;</label>
-                            <button type="button" class="btn btn-sm">Thêm</button>
+                            <button type="submit" id="btnPostAdd" class="btn btn-sm"><i class="fas fa-pencil-alt"></i>
+                                Thêm địa chỉ</button>
                         </div>
                     </div>
                 </form>
@@ -108,13 +124,14 @@
                 <thead class="table-header">
                     <tr>
                         <th>STT</th>
-                        <th>Tên người nhận</th>
+                        <th>Loại khách hàng</th>
                         <th>Số điện thoại</th>
                         <th>Tên địa chỉ</th>
                         <th>Địa chỉ</th>
                         <th>Xã/phường</th>
-                        <th>Quận/huyện</th>
-                        <th>Tỉnh/thành phố</th>
+                        <th>Quận/Huyện</th>
+                        <th>Tỉnh/Thành phố</th>
+                        <th>Website</th>
                         <th>Thời gian tạo</th>
                     </tr>
                 </thead>
@@ -124,13 +141,14 @@
                     <tr>
                         {{-- <td class="text-center"><input type="checkbox"></td> --}}
                         <td class="text-center">{{$key+1}}</td>
-                        <td class="text-left">{{$item['address_of']}}</td>
+                        <td class="text-center">{{$item['address_of']}}</td>
                         <td class="text-center">{{$item['phone']}}</td>
                         <td class="text-center">{{$item['name_address']}}</td>
                         <td class="text-center">{{$item['address']}}</td>
                         <td class="text-center">{{App\Library\Address\ReadAddress::getWard($item['ward'])}}</td>
                         <td class="text-center">{{App\Library\Address\ReadAddress::getDistrict($item['district'])}}</td>
                         <td class="text-center">{{App\Library\Address\ReadAddress::getCity($item['city'])}}</td>
+                        <td class="text-center">{{$item['website']}}</td>
                         <td class="text-center">{{$item['created_at']}}</td>
                     </tr>
                     @endforeach
@@ -145,26 +163,21 @@
                 <tfoot class="table-header">
                     <tr>
                         <th>STT</th>
-                        <th>Tên người nhận</th>
+                        <th>Loại khách hàng</th>
                         <th>Số điện thoại</th>
                         <th>Tên địa chỉ</th>
                         <th>Địa chỉ</th>
-                        <th>Xã/phường</th>
-                        <th>Quận/huyện</th>
-                        <th>Tỉnh/thành phố</th>
+                        <th>Xã/Phường</th>
+                        <th>Quận/Huyện</th>
+                        <th>Tỉnh/Thành phố</th>
+                        <th>Website</th>
                         <th>Thời gian tạo</th>
 
                     </tr>
                 </tfoot>
             </table>
             <div class="d-flex justify-content-center">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Trang trước</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Trang sau</a></li>
-                </ul>
+                {{ $arrData['address']->links("pagination::bootstrap-4") }}
             </div>
         </div>
     </div>
