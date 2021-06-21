@@ -30,27 +30,27 @@
 
                             </div>
                             <div class="form-group col-3">
-                                <label class="label" for="city">Tỉnh/Thành phố:</label>
+                                <label class="label" for="city">Tỉnh/Thành phố</label>
                                 <select class="form-control rounded form-control-sm" name="city" id="city" @if($arrData['param']['city']) idOldCity="{{$arrData['param']['city']}}" @endif>
                                     <option  value="">=== Chọn tỉnh thành phố ===</option>
                                 </select>
                             </div>
 
                             <div class="form-group col-3">
-                                <label class="label" for="district">Quận/Huyện:</label>
+                                <label class="label" for="district">Quận/Huyện</label>
                                 <select class="form-control rounded form-control-sm" name="district" id="district" @if($arrData['param']['district']) idOldDistrict="{{ $arrData['param']['district']}}"@endif>
                                     <option  value="">=== Chọn quận huyện ===</option>
                                 </select>
                             </div>
 
                             <div class="form-group col-3">
-                                <label class="label" for="ward">Xã/Phương:</label>
+                                <label class="label" for="ward">Xã/Phương</label>
                                 <select class="form-control rounded form-control-sm" name="ward" id="ward"@if($arrData['param']['ward']) idOldWard="{{ $arrData['param']['ward']}}"@endif>
                                     <option  value="">=== Chọn xã phường ===</option>
                                 </select>
                             </div>
                             <div class="form-group col-3">
-                                <label class="label" for="Begin">Thời gian bắt:</label>
+                                <label class="label" for="Begin">Thời gian bắt đầu</label>
                                 <input type="text" class="form-control rounded form-control-sm datepicker" name="dateBegin" id="dateBegin"  placeholder="mm/dd/yyyy" value="{{ $arrData['param']['dateBegin']}}">
                             </div>
                             <div class="form-group col-3">
@@ -59,7 +59,7 @@
                             </div>
 
                             <div class="form-group col-3">
-                                <label class="label" for="type">Loại dịch vụ:</label>
+                                <label class="label" for="type">Loại dịch vụ</label>
                                 <select name="type" class="form-control rounded form-control-sm" id="type">
                                     <option  value="">=== Chọn loại dịch vụ ===</option>
                                     @foreach (App\Library\General::$arrTypeShip as $key => $item)
@@ -68,7 +68,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-3">
-                                <label class="label" for="status">Trạng thái đơn vận:</label>
+                                <label class="label" for="status">Trạng thái đơn vận</label>
                                 <select name="status" class="form-control rounded
                                             form-control-sm" id="status">
                                             <option  value="">=== Chọn trạng thái đơn vận cần xem ===</option>
@@ -78,7 +78,7 @@
                                         </select>
                             </div>
                             <div class="form-group col-6">
-                                <label class="label" for="address_id">Địa chỉ tạo đơn vận:</label>
+                                <label class="label" for="address_id">Địa chỉ tạo đơn vận</label>
                                 <select name="address_id" class="form-control rounded form-control-sm" id="address_id">
                                     <option  value="">=== Chọn địa chỉ tạo đơn vận ===</option>
                                     @if ($arrData["address"])
