@@ -191,9 +191,7 @@ $(document).ready(function() {
             url: url_base + 'yeu-cau-phat',
             type: 'POST',
             dataType: 'json',
-            data: {
-                params: params,
-            },
+            data: {},
             success: function(result) {
                 if (result.constructor === String) {
                     result = JSON.parse(result);

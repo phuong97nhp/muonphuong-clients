@@ -18,7 +18,7 @@
                 </button>
             </div>
         @endif
-        
+
         <div class="tab-content tab-content-table">
             <div id="home" class="tab-pane active">
                 <div class="bg-eee border-ff6600">
@@ -96,23 +96,21 @@
                                     <i class="fas fa-search"></i> Tìm kiếm
                                 </button>
                             </div>
-                            <div class="form-group col-2">
-                                <label class="label">&nbsp;</label>
-                                <button type="button"  class="btn btn-sm">
-                                    <i class="far fa-file-excel"></i> Xuất excel
-                                </button>
-                            </div>
-                            <div class="form-group col-2">
-                                <label class="label">&nbsp;</label>
-                                <button type="button" class="btn btn-sm" id="yeucauphat">
-                                    <i class="fas fa-paper-plane"></i> Yêu cầu phát
-                                </button>
-                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <form action="/xuat-file-excel">
+            <div class="col-12 mt-2 mb-1">
+                <button type="button"  class="btn btn-sm btn-line">
+                    <i class="far fa-file-excel"></i> Xuất excel
+                </button>
+                <button type="button" class="btn btn-sm btn-line" id="yeucauphat">
+                    <i class="fas fa-paper-plane"></i> Yêu cầu phát
+                </button>
+            </div>
+        </form>
         <div class="row">
             <div class="col-12 mt-2">
                 <table class="table table-striped" id="data-tabel-search">
