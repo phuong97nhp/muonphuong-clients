@@ -51,9 +51,13 @@
                                 Loại khách hàng <span class="text-danger text-weight-600">(*)</span>
                             </label>
                             <select name="address_of" class="form-control rounded form-control-sm" id="address_of">
-                                <option>=== Loại khách hàng ===</option>
-                                <option {{(old('address_of') == 'Customer')?'selected':''}} value="Customer">Customer</option>
-                                <option {{(old('address_of') == 'Post')?'selected':''}} value="Post">Post</option>
+                                <option value="">=== Loại khách hàng ===</option>
+                                @if (Auth::user()['is_admin'] == '0')
+                                <option value="customer">Customer</option>
+                                @else
+                                <option value="customer">Customer</option>
+                                <option value="post">Post</option>
+                                @endif
                             </select>
                             @if($errors->has('address_of'))
                             <p class="error-warning">{{$errors->first('address_of')}}</p>

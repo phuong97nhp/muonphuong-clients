@@ -62,8 +62,8 @@ class OrdersController extends Controller
         if (!empty($_GET['dateEnd']) && !empty($_GET['dateBegin'])) {
             $param['dateEnd'] =  $_GET['dateEnd'];
             $param['dateBegin'] =  $_GET['dateBegin'];
-            $strDateBegin = date("Y-m-d H:i:s", strtotime($_GET['dateEnd']." 00:00:00"));
-            $strDateEnd = date("Y-m-d H:i:s", strtotime($_GET['dateBegin']." 23:59:59"));
+            $strDateBegin = date("Y-m-d H:i:s", strtotime($_GET['dateBegin']." 00:00:00"));
+            $strDateEnd = date("Y-m-d H:i:s", strtotime($_GET['dateEnd']." 23:59:59"));
             $serviveQueryOrder->where("enter_date", ">=", $strDateBegin);
             $serviveQueryOrder->where("enter_date", "<=", $strDateEnd);
         }
