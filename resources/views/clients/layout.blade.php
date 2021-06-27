@@ -79,6 +79,8 @@
 <script src="{{asset('public/clients/library/datatables/js/jquery.dataTables.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/dataTables.buttons.min.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/jszip.min.js')}}"></script>
+<script src="{{asset('public/clients/library/excel/jszip.js')}}"></script>
+<script src="{{asset('public/clients/library/excel/xlsx.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/pdfmake.min.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/vfs_fonts.js')}}"></script>
 <script src="{{asset('public/clients/library/datatables/js/buttons.html5.min.js')}}"></script>

@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('code_customer')->nullable();
             $table->string('code_product')->nullable();
             $table->string('phone')->nullable();
+            $table->string('image')->nullable();
             $table->integer('address_id')->nullable(); // địa chỉ làm việc
             $table->string('address')->nullable();
             $table->string('city')->nullable();

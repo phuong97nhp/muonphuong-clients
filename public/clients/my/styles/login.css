@@ -45,3 +45,7 @@ body {
 .cut-feedback {
     display: none;
 }
+
+.bootbox {
+    margin-top: 60px;
+}

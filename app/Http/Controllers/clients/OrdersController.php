@@ -284,6 +284,108 @@ class OrdersController extends Controller
         }
     }
 
+
+    public function postAddExcel(Request $request){
+        $intAddressCustomer = empty($request->input('address_customer'))?'':trim($request->input('address_customer'));
+        $strAddress = empty($request->input('address'))?'':trim($request->input('address'));
+        $intCity = empty($request->input('city'))?'':trim($request->input('city'));
+        $intDistrict = empty($request->input('district'))?'':trim($request->input('district'));
+        $intWard = empty($request->input('ward'))?'':trim($request->input('ward'));
+        $strType = empty($request->input('type'))?'':trim($request->input('type'));
+        $strPayments = empty($request->input('payments'))?'':trim($request->input('payments'));
+        $intWeight = empty($request->input('weight'))?'':trim($request->input('weight'));
+        $strFullNameB2C = empty($request->input('full_name_b2c'))?'':trim($request->input('full_name_b2c'));
+        $intPhoneB2C = empty($request->input('phone_b2c'))?'':trim($request->input('phone_b2c'));
+        $strCodeB2C = empty($request->input('code_b2c'))?'':trim($request->input('code_b2c'));
+        $intCollectionMoney = empty($request->input('collection_money'))?'':trim($request->input('collection_money'));
+        $strContent = empty($request->input('content'))?'':trim($request->input('content'));
+
+        if(empty($intAddressCustomer)){
+            $arrReponse = [
+                'success' => false,
+                'code' => 500,
+                'messenger' => 'Địa chỉ giao hàng không được để trống.',
+                'data' => [],
+                'error' => []
+            ];
+            return response()->json($arrReponse, 200);
+        }
+
+        if(empty($strAddress)){
+            $arrReponse = [
+                'success' => false,
+                'code' => 500,
+                'messenger' => 'Cần nhập vào địa chỉ.',
+                'data' => [],
+                'error' => []
+            ];
+            return response()->json($arrReponse, 200);
+        }
+
+        $strState = ReadAddress::getDistrictState($intDistrict);
+        $intIntoMony = IntoMoney::getPayment($strType, $strState, $intWeight)["totalcharge"];
+
+        $arrData =  [
+            'code_az'          => (string) time(),
+            'code_customer'    => (string) Auth::user()["code_customer"],
+            'code_b2b'         => (string) Auth::user()["code_customer"],
+            'code_b2c'         => $strCodeB2C,
+            'enter_date'       => date('Y-m-d H:i:s'),
+            'request_date'     => null,
+            'confrim_date'     => null,
+            'get_date'         => null,
+            'phone_b2c'        => (string) $intPhoneB2C,
+            'name_from'        => (string)$strFullNameB2C,
+            'code_product'     => null,
+            'full_name_b2c'    => $strFullNameB2C,
+            'address'          => (string) $strAddress,
+            'city'             => (string) $intCity,
+            'ward'             => (string) $intWard,
+            'district'         => (string) $intDistrict,
+            'weight'           => (int) $intWeight,
+            'total'            => null,
+            'packages'         => (int) 1,
+            'address_id'       => (int) $intAddressCustomer,
+            'collection_money' => (int) $intCollectionMoney,
+            'into_money'       => (string) $intIntoMony,
+            'type'             => (string) $strType,
+            'name_get'         => null,
+            'name_confrim'     => null,
+            'content'          => $strContent,
+            'status'           => 1,
+            'is_deleted'       => 0,
+            'create_user'      => Auth::id(),
+            'update_user'      => Auth::id(),
+            'created_at'       => date('Y-m-d H:i:s'),
+            'updated_at'       => null,
+            'payments'         => $strPayments,
+        ];
+        
+        if(Order::insert($arrData)){
+            if(empty($strAddress)){
+                $arrReponse = [
+                    'success' => true,
+                    'code' => 200,
+                    'messenger' => 'Thêm đơn vận thành công.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+        }else {
+            if(empty($strAddress)){
+                $arrReponse = [
+                    'success' => true,
+                    'code' => 200,
+                    'messenger' => 'Thêm đơn vận không thành công.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+        }
+    }
+
     public function postPayment(Request $request){
         $strType = trim($request->input('type')); 
         $intDistrict = trim($request->input('district')); 

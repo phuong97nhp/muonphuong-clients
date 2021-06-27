@@ -207,8 +207,8 @@
                                 </div>
                             </div>
                             <div class="form-group col-12">
-                                <label class="label" for="">&nbsp;</label>
-                                <button type="submit" class="btn btn-sm"><i class="fas fa-upload"></i> Tải lên đơn vận</button>
+                                {{-- <label class="label" for="">&nbsp;</label> --}}
+                                {{-- <button type="submit" class="btn btn-sm"><i class="fas fa-upload"></i> Tải lên đơn vận</button> --}}
                                 <a class="d-flex justify-content-center mt-2" target="_back" href="{{asset('public/excel/excel-import-customer.xlsx')}}">Tải về mẫu Excel</a>
                             </div>
                         </div>

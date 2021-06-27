@@ -24,6 +24,7 @@ class Trackings extends Migration
             $table->string('name_receiver')->nullable(); // tên người nhận
             $table->timestamp('date_receiver')->nullable(); // thời gian xác nhận hàng
             $table->string('note_customer')->nullable(); // khách hàng note khi nhận hàng
+            $table->string('image')->nullable(); // khách hàng note khi nhận hàng
             $table->string('refund')->nullable(); // nguyên nhân hoàn đơn không nhận
             $table->integer('orders_are_in')->nullable(); // đờn hàng đang ở
             $table->integer('status')->nullable();

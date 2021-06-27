@@ -144,46 +144,6 @@ $(document).ready(function() {
         altFormat: "dd-mm-yy",
     });
 
-    // var tableSearchData = $('#data-tabel-search').DataTable({
-    //     "ajax": {
-    //         url: url_base + 'theo-doi-don-van-search',
-    //         dataType: 'json',
-    //         type: 'POST',
-    //         crossDomain: true,
-    //         data: function(d) {
-    //             $('form#form-search-order').serialize();
-    //         }
-    //     },
-    //     "order": [],
-    //     "dom": 'Bfrtip',
-    //     "buttons": ['copyHtml5', 'excelHtml5', 'csvHtml5', 'print'],
-    //     "pageLength": 10,
-    //     "pagingType": "full_numbers",
-    //     "language": {
-    //         "decimal": "",
-    //         "emptyTable": "Thông tin không tồn tại",
-    //         "info": "Hiển từ trang _START_ đến trang _END_ tất cả _TOTAL_ mục",
-    //         "infoEmpty": "Không tồn tại thông tin nào",
-    //         "infoFiltered": "(filtered from _MAX_ total entries)",
-    //         "infoPostFix": "",
-    //         "thousands": ",",
-    //         "lengthMenu": "Hiển thị _MENU_ mục",
-    //         "loadingRecords": "Đang tải xuống...",
-    //         "processing": "Đang tải xuống...",
-    //         "search": "Tìm nhanh:",
-    //         "zeroRecords": "No matching records found",
-    //         "paginate": {
-    //             "first": "Tiếp",
-    //             "last": "Trước",
-    //             "next": "Trang Tiếp",
-    //             "previous": "Trang Trước"
-    //         },
-    //         "aria": {
-    //             "sortAscending": ": Kích hoạt tăng dần",
-    //             "sortDescending": ": Kích hoạt giảm dần"
-    //         }
-    //     },
-    // });
     $('#data-tabel-search').DataTable({
         "dom": 'Bfrtip',
         "buttons": ['copyHtml5', 'excelHtml5', 'csvHtml5', 'print'],
@@ -238,5 +198,86 @@ $(document).ready(function() {
                 }
             }
         });
+    }
+    // =================================================
+    var ExcelToJSON = function() {
+        this.parseExcel = function(file) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var data = e.target.result;
+                var workbook = XLSX.read(data, {
+                    type: 'binary'
+                });
+
+
+                workbook.SheetNames.forEach(function(sheetName) {
+                    // Here is your object
+                    var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                    json_object = JSON.stringify(XL_row_object);
+                    json_object = JSON.parse(json_object);
+                    if (json_object) {
+                        var count = 0;
+                        for (let i = 0; i < json_object.length; i++) {
+                            $('body').find('.bootbox').hide();
+                            sendAjax(json_object[i]);
+                            count++;
+                            if (count == json_object.length) {
+                                bootbox.alert('Đã tải lên ' + count + 'đơn hàng, kiểm tra lại.');
+                                location.reload();
+                            }
+                            sleep(500);
+                        }
+                    }
+                })
+            };
+
+            reader.onerror = function(ex) {
+                console.log(ex);
+            };
+
+            reader.readAsBinaryString(file);
+        };
+    };
+
+    function handleFileSelect(evt) {
+        bootbox.dialog({
+            message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Loading...</div>',
+            closeButton: false
+        });
+        var files = evt.target.files; // FileList object
+        var xl2json = new ExcelToJSON();
+        xl2json.parseExcel(files[0]);
+        // console.log(xl2json);
+    }
+
+    document.getElementById('fileExcel').addEventListener('change', handleFileSelect, false);
+
+    function sendAjax(item) {
+        var htmlTable = '';
+        $.ajax({
+            url: '/post-add-order',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'address_customer': item.dia_chi_lay_hang,
+                'address': item.so_nha_va_duong,
+                'city': item.tinh_thanh_pho,
+                'district': item.quan_huyen,
+                'ward': item.xa_phuong,
+                'type': item.loai_dich_vu,
+                'payments': item.hinh_thuc_thanh_toan,
+                'weight': item.trong_luong,
+                'full_name_b2c': item.ten_nguoi_nhan,
+                'phone_b2c': item.so_dien_thoai,
+                'code_b2c': item.ma_don_hang_rieng,
+                'collection_money': item.thu_ho,
+                'content': item.ghi_chu,
+            },
+        });
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 });

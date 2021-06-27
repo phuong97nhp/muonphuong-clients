@@ -244,3 +244,7 @@ tbody tr td {
 #tabel-data::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.bootbox {
+    margin-top: 60px;
+}

@@ -60,10 +60,11 @@ Route::group(['prefix' => '/', 'middleware' => 'CheckAdmin'], function () {
     
     Route::post('/yeu-cau-phat', [OrdersController::class, 'yeuCauPhat'])->name('yeu-cau-phat');
     Route::post('/post-add-address', [AddressController::class, 'postAdd'])->name('post-add-address');
-
+    
     Route::post('/theo-doi-don-van-search', [OrdersController::class, 'postSearchIndex'])->name('post-order-index');
     Route::post('/post-import-order', [OrdersController::class, 'postImport'])->name('post-import-order');
     Route::post('/post-add-order', [OrdersController::class, 'postAdd'])->name('post-add-order');
+    Route::post('/post-add-order-excel', [OrdersController::class, 'postAddExcel'])->name('post-add-address');
     Route::post('/post-payment', [OrdersController::class, 'postPayment'])->name('post-payment');
 
     // Route::get('/', [AppController::class, 'index'])->name('home');
