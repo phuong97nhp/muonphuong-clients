@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\clients\UsersController;
 use App\Http\Controllers\clients\OrdersController; 
 use App\Http\Controllers\clients\AddressController; 
+use App\Http\Controllers\cpn\AppController; 
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
@@ -18,6 +19,8 @@ use App\Models\User;
 |
 */
 
+
+Route::get('/chinh-noi-dung', [AppController::class, 'edit'])->name('app-edit');
 
 Route::group(['prefix' => '/', 'middleware' => 'CheckOut'], function () {
     // đăng nhập
@@ -57,7 +60,7 @@ Route::group(['prefix' => '/', 'middleware' => 'CheckAdmin'], function () {
     Route::get('/them-dia-chi', [AddressController::class, 'add'])->name('address-add');
     Route::get('/theo-doi-don-van', [OrdersController::class, 'index'])->name('order-index');
     Route::get('/dang-xuat', [UsersController::class, 'logout'])->name('logout');
-    
+
     Route::post('/yeu-cau-phat', [OrdersController::class, 'yeuCauPhat'])->name('yeu-cau-phat');
     Route::post('/post-add-address', [AddressController::class, 'postAdd'])->name('post-add-address');
     
@@ -72,5 +75,6 @@ Route::group(['prefix' => '/', 'middleware' => 'CheckAdmin'], function () {
     // Route::get('tao-don-hang', [ProductController::class, 'creat'])->name('product');
 
 });
+    
 
 // Route::get('/{any}', [AppController::class, 'pagenotfound'])->where('any', '.*');
