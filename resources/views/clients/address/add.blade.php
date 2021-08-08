@@ -1,6 +1,11 @@
 @extends('clients.layout')
 @section('title', 'Thêm địa chỉ - AZExpress')
 @section('mainContainer')
+<style>
+    .btn {
+        display: inline;
+    }
+</style>
 <section id="mainContainer" class="container-fluid my-2">
     <ul class="nav nav-tabs nav-tabs-table" role="tablist">
         <li class="nav-item">
@@ -17,13 +22,13 @@
                     @csrf
                     <div class="row p-2">
                         <div class="form-group col-3">
-                            <label class="label" for="name_address">Tên địa chỉ <span
+                            <label class="label" for="name_address_b2b">Tên địa chỉ <span
                                     class="text-danger text-weight-600">(*)</span></label>
-                            <input id="name_address" type="text" class="form-control rounded form-control-sm"
-                                placeholder="Nhập vào tên địa chỉ (Công ty A...)" name="name_address"
-                                value="{{old('name_address')}}">
-                            @if($errors->has('name_address'))
-                            <p class="error-warning">{{$errors->first('name_address')}}</p>
+                            <input id="name_address_b2b" type="text" class="form-control rounded form-control-sm"
+                                placeholder="Nhập vào tên địa chỉ (Công ty A...)" name="name_address_b2b"
+                                value="{{old('name_address_b2b')}}">
+                            @if($errors->has('name_address_b2b'))
+                            <p class="error-warning">{{$errors->first('name_address_b2b')}}</p>
                             @endif
                         </div>
 
@@ -48,10 +53,10 @@
                         </div>
                         <div class="form-group col-3">
                             <label class="label" for="address_of">
-                                Loại khách hàng <span class="text-danger text-weight-600">(*)</span>
+                                Loại địa chỉ <span class="text-danger text-weight-600">(*)</span>
                             </label>
                             <select name="address_of" class="form-control rounded form-control-sm" id="address_of">
-                                <option value="">=== Loại khách hàng ===</option>
+                                <option value="">=== Loại địa chỉ ===</option>
                                 @if (Auth::user()['is_admin'] == '0')
                                 <option value="customer">Customer</option>
                                 @else
@@ -128,57 +133,63 @@
                 <thead class="table-header">
                     <tr>
                         <th>STT</th>
-                        <th>Loại khách hàng</th>
-                        <th>Số điện thoại</th>
                         <th>Tên địa chỉ</th>
+                        <th>Loại địa chỉ</th>
+                        <th>Số điện thoại</th>
                         <th>Địa chỉ</th>
                         <th>Xã/phường</th>
                         <th>Quận/Huyện</th>
                         <th>Tỉnh/Thành phố</th>
                         <th>Website</th>
                         <th>Thời gian tạo</th>
+                        <th>Chức năng</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
                     @if($arrData['address'])
                     @foreach ($arrData['address'] as $key => $item)
-                    <tr>
+                    <tr class="py-5">
                         {{-- <td class="text-center"><input type="checkbox"></td> --}}
                         <td class="text-center">{{$key+1}}</td>
+                        <td class="text-center">{{$item['name_address_b2b']}}</td>
                         <td class="text-center">{{$item['address_of']}}</td>
                         <td class="text-center">{{$item['phone']}}</td>
-                        <td class="text-center">{{$item['name_address']}}</td>
                         <td class="text-center">{{$item['address']}}</td>
                         <td class="text-center">{{App\Library\Address\ReadAddress::getWard($item['ward'])}}</td>
                         <td class="text-center">{{App\Library\Address\ReadAddress::getDistrict($item['district'])}}</td>
                         <td class="text-center">{{App\Library\Address\ReadAddress::getCity($item['city'])}}</td>
                         <td class="text-center">{{$item['website']}}</td>
                         <td class="text-center">{{$item['created_at']}}</td>
+                        <td class="text-center btn-group btn-group-sm">
+                            <button class="btn btn-warning btnUserEdit" idValue="{{$item['id']}}"><i class="fas fa-user-edit"></i></button>
+                            {{-- <button class="btn btn-warning btnEdit" idValue="{{$item['id']}}"><i class="fas fa-pen"></i></button> --}}
+                            <button class="btn btn-warning btnDelete" idValue="{{$item['id']}}"><i class="fas fa-trash-alt"></i></button>
+                        </td>
                     </tr>
                     @endforeach
                     @else
                     <tr>
-                        <td colspan="10">
+                        <td colspan="11">
                             <p class="text-center">Không có dữ liệu</p>
                         </td>
                     </tr>
                     @endif
                 </tbody>
-                <tfoot class="table-header">
+                <thead class="table-header">
                     <tr>
                         <th>STT</th>
-                        <th>Loại khách hàng</th>
-                        <th>Số điện thoại</th>
                         <th>Tên địa chỉ</th>
+                        <th>Loại địa chỉ</th>
+                        <th>Số điện thoại</th>
                         <th>Địa chỉ</th>
-                        <th>Xã/Phường</th>
+                        <th>Xã/phường</th>
                         <th>Quận/Huyện</th>
                         <th>Tỉnh/Thành phố</th>
                         <th>Website</th>
                         <th>Thời gian tạo</th>
-
+                        <th>Chức năng</th>
                     </tr>
-                </tfoot>
+                </thead>
             </table>
             <div class="d-flex justify-content-center">
                 {{ $arrData['address']->links("pagination::bootstrap-4") }}

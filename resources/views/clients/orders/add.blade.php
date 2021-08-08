@@ -3,6 +3,7 @@
 @section('mainContainer')
 
     <section id="mainContainer" class="container-fluid my-2">
+    @if (false)
         <ul class="nav nav-tabs nav-tabs-table" role="tablist">
             <li class="nav-item">
                 <a class="nav-link nav-link-table active" data-toggle="tab" href="#home">
@@ -15,7 +16,16 @@
                 </a>
             </li>
         </ul>
-        
+    @else
+        <ul class="nav nav-tabs nav-tabs-table" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link nav-link-table active" data-toggle="tab" href="#shipper">
+                    <i class="fas fa-cart-plus"></i> Tạo đơn vận chuyển
+                </a>
+            </li>
+        </ul>
+    @endif
+
         @if(session('message'))
             <div class="alert alert-success text-success my-1 p-2">
                 {{session('message')}}
@@ -26,7 +36,118 @@
         @endif
 
         <div class="tab-content tab-content-table">
-            <div id="home" class="tab-pane active">
+            <div id="shipper" class="tab-pane active">
+                <div class="bg-eee border-ff6600">
+                    {{-- action="{{url('/post-add-order')}}" --}}
+                    <form method="POST">
+                        @csrf
+                        <input type="hidden" id="addressB2B" name="addressB2B" value="{{$arrData['strAddress']}}">
+                        <div class="row p-2">
+                            <div class="form-group col-3">
+                                <label class="label" for="city">Tỉnh/Thành phố:<span class="text-danger text-weight-600">(*)</span></label>
+                                <select class="form-control rounded form-control-sm" name="city" id="city" @if(old('city')) idOldCity="{{old('city')}}" @endif>
+                                    <option value="0" >=== Chọn tỉnh thành phố ===</option>
+                                </select>
+                                @if($errors->has('city'))
+                                    <p class="error-warning">{{$errors->first('city')}}</p>
+                                @endif
+                            </div>
+
+                            <div class="form-group col-3">
+                                <label class="label" for="district">Quận/Huyện:<span class="text-danger text-weight-600">(*)</span></label>
+                                <select class="form-control rounded form-control-sm" name="district" id="district" @if(old('district')) idOldDistrict="{{old('district')}}"@endif>
+                                    <option value="0" >=== Chọn quận huyện ===</option>
+                                </select>
+                                @if($errors->has('district'))
+                                    <p class="error-warning">{{$errors->first('district')}}</p>
+                                @endif
+                            </div>
+
+                            <div class="form-group col-3">
+                                <label class="label" for="ward">Xã/Phương:<span class="text-danger text-weight-600">(*)</span></label>
+                                <select class="form-control rounded form-control-sm" name="ward" id="ward"@if(old('ward')) idOldWard="{{old('ward')}}"@endif>
+                                    <option value="0" >=== Chọn xã phường ===</option>
+                                </select>
+                                @if($errors->has('ward'))
+                                    <p class="error-warning">{{$errors->first('ward')}}</p>
+                                @endif
+                            </div>
+
+                            <div class="form-group col-3">
+                                <label class="label" for="">Địa chỉ<span class="text-danger text-weight-600">(*)</span></label>
+                                <input id="address" name="address" type="text" class="form-control rounded form-control-sm" placeholder="Nhập vào địa chỉ (nhà và đường)" name="address" value="{{old('address')}}">
+                                @if($errors->has('address'))
+                                    <p class="error-warning">{{$errors->first('address')}}</p>
+                                @endif
+                            </div>
+                            <div class="form-group col-3">
+                                <label class="label" for="weight">Trọng lượng<span class="text-danger text-weight-600">(*)</span></label>
+                                <input type="number" id="weight" name="weight" class="form-control rounded
+                                            form-control-sm" placeholder="Nhập trọng lương" name="weight" value="{{old('weight')}}">
+                                @if($errors->has('weight'))
+                                    <p class="error-warning">{{$errors->first('weight')}}</p>
+                                @endif
+                            </div>
+                            <div class="form-group col-3">
+                                <label class="label" for="full_name_b2c">
+                                    Tên người nhận<span class="text-danger text-weight-600">(*)</span>
+                                </label>
+                                <input type="text" id="full_name_b2c" class="form-control rounded
+                                form-control-sm" placeholder="Nhập tên người nhận hàng" id="full_name_b2c" value="{{old('full_name_b2c')}}">
+                                @if($errors->has('full_name_b2c'))
+                                    <p class="error-warning">{{$errors->first('full_name_b2c')}}</p>
+                                @endif
+                            </div>
+
+                            <div class="form-group col-3">
+                                <label class="label" for="phone_b2c">Điện thoại người nhận<span class="text-danger text-weight-600">(*)</span></label>
+                                <input type="number" name="phone_b2c" class="form-control rounded
+                                            form-control-sm" placeholder="Nhập số điện thoại" id="phone_b2c" value="{{old('phone_b2c')}}">
+                                @if($errors->has('phone_b2c'))
+                                    <p class="error-warning">{{$errors->first('phone_b2c')}}</p>
+                                @endif
+                            </div>
+                            <div class="form-group col-3">
+                                <label class="label" for="collection_money">Thu hộ</label>
+                                <input type="text" name="collection_money" class="form-control rounded
+                                            form-control-sm" placeholder="Nhận số tiền thu hộ" id="collection_money" value="{{old('collection_money')}}">
+                                @if($errors->has('collection_money'))
+                                    <p class="error-warning">{{$errors->first('collection_money')}}</p>
+                                @endif
+                            </div>
+                            <div class="form-group col-3">
+                                <label class="label" for="code_b2c">Mã hóa đơn<span class="text-danger text-weight-600">(*)</span></label>
+                                <input type="text" name="code_b2c" class="form-control rounded
+                                            form-control-sm" placeholder="Mã hóa đơn" id="code_b2c" value="{{old('code_b2c')}}">
+                                @if($errors->has('code_b2c'))
+                                    <p class="error-warning">{{$errors->first('code_b2c')}}</p>
+                                @endif
+                            </div>
+                            <div class="form-group col-5">
+                                <label class="label" for="content">Ghi chú</label>
+                                <input type="text" id="content" class="form-control rounded
+                                            form-control-sm" placeholder="Nhận nội dung yêu cầu thêm" name="content"  value="{{old('content')}}">
+                                @if($errors->has('content'))
+                                    <p class="error-warning">{{$errors->first('content')}}</p>
+                                @endif
+                            </div>
+                            <div class="form-group col-2">
+                                <label class="label" for="into_money">Tổng cước tạm tính </label>
+                                <input readonly type="text" id="into_money" class="form-control rounded
+                                            form-control-sm" placeholder="" name="into_money" value="{{old('into_money')}}">
+                                @if($errors->has('into_money'))
+                                    <p class="error-warning">{{$errors->first('into_money')}}</p>
+                                @endif
+                            </div>
+                            <div class="form-group col-2 text-center">
+                                <label class="label" for="">&nbsp;</label>
+                                <button type="button" id="btnPostAdd" class="btn btn-sm"><i class="fas fa-pencil-alt"></i> Tạo đơn vận</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="home" class="tab-pane fade">
                 <div class="bg-eee border-ff6600">
                     <form method="POST" action="{{url('/post-add-order')}}">
                         @csrf
@@ -111,7 +232,7 @@
                                 @endif
                             </div>
                             <div class="form-group col-3">
-                                <label class="label" for="weight">Trọng lượng<span class="text-danger text-weight-600">(*)</span></label>
+                                <label class="label" for="weight">Trọng lượng(gram)<span class="text-danger text-weight-600">(*)</span></label>
                                 <input type="number" id="weight" name="weight" class="form-control rounded
                                             form-control-sm" placeholder="Nhập trọng lương" name="weight" value="{{old('weight')}}">
                                 @if($errors->has('weight'))
@@ -148,7 +269,7 @@
                             <div class="form-group col-3">
                                 <label class="label" for="collection_money">Thu hộ</label>
                                 <input type="text" name="collection_money" class="form-control rounded
-                                            form-control-sm" placeholder="Nhận số tiền thu hộ" name="collection_money" value="{{old('collection_money')}}">
+                                            form-control-sm" placeholder="Nhận số tiền thu hộ" id="collection_money" value="{{old('collection_money')}}">
                                 @if($errors->has('collection_money'))
                                     <p class="error-warning">{{$errors->first('collection_money')}}</p>
                                 @endif
@@ -218,6 +339,7 @@
         </div>
         <div class="row">
             <div class="col-12 mt-2">
+                @if (false)
                 <table class="table table-striped">
                     <thead class="table-header">
                         <tr>
@@ -283,6 +405,73 @@
                         </tr>
                     </tfoot>
                 </table>
+                @else
+                <style>
+                    #showPrint {
+                        margin: 0 auto;
+                        width: 500px;
+                        display: none;
+                    }
+                    #showPrint td {
+                        border: 1px  solid;
+                        padding: 3px;
+                    }
+                </style>
+                    <div id="showPrint">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td colspan="2" align="center">
+                                        <img id="logo" src="{{asset('public/clients/images/logo.png')}}" alt="Logo
+                                        azexpress.com.vn">
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Địa chỉ gửi: </td>
+                                    <td id="addressB2BText">158 đường số 19, Bình Trị Đông B, Q.Bình Tân, Tp.HCM</td>
+                                </tr>
+                                <tr>
+                                    <td>Địa chỉ gửi: </td>
+                                    <td id="addressB2CText"></td>
+                                </tr>
+                                <tr>
+                                    <td>Trọng lượng: </td>
+                                    <td><i id="weightText"></i> (gram)</td>
+                                </tr>
+                                <tr>
+                                    <td>Tổng km: </td>
+                                    <td id="kmText"></td>
+                                </tr>
+                                <tr>
+                                    <td>Tên người nhận: </td>
+                                    <td id="full_name_b2cText"></td>
+                                </tr>
+                                <tr>
+                                    <td>Số điện thoại: </td>
+                                    <td id="phone_b2cText"></td>
+                                </tr>
+                                <tr>
+                                    <td>Mã hóa đơn: </td>
+                                    <td id="code_b2cText"></td>
+                                </tr>
+                                <tr>
+                                    <td>Số tiền thu hộ: </td>
+                                    <td id="collection_moneyText"></td>
+                                </tr>
+                                <tr>
+                                    <td>Tổng tiền: </td>
+                                    <td id="into_moneyText"></td>
+                                </tr>
+                                <tr>
+                                    <td>Ghi chú: </td>
+                                    <td id=""></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
                 <div class="d-flex justify-content-center">
                     {{ $arrData['orders']->links("pagination::bootstrap-4") }}
                 </div>

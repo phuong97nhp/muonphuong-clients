@@ -58,11 +58,15 @@ Route::group(['prefix' => '/', 'middleware' => 'CheckAdmin'], function () {
     Route::get('', [OrdersController::class, 'index'])->name('order-index');
     Route::get('/tao-don-van', [OrdersController::class, 'add'])->name('order-add');
     Route::get('/them-dia-chi', [AddressController::class, 'add'])->name('address-add');
+    Route::post('/chinh-dia-chi/{id}', [AddressController::class, 'edit'])->name('address-edit');
+    Route::post('/xoa-dia-chi', [AddressController::class, 'delete'])->name('address-delete');
+    Route::post('/cap-nhat-dia-chi-cho-tai-khoan', [UsersController::class, 'updateAddressId'])->name('user-update-address-id');
     Route::get('/theo-doi-don-van', [OrdersController::class, 'index'])->name('order-index');
     Route::get('/dang-xuat', [UsersController::class, 'logout'])->name('logout');
 
     Route::post('/yeu-cau-phat', [OrdersController::class, 'yeuCauPhat'])->name('yeu-cau-phat');
     Route::post('/post-add-address', [AddressController::class, 'postAdd'])->name('post-add-address');
+    Route::post('/tao-don-van-api-map', [OrdersController::class, 'postAddByMapAPI'])->name('post-add-map-api');
     
     Route::post('/theo-doi-don-van-search', [OrdersController::class, 'postSearchIndex'])->name('post-order-index');
     Route::post('/post-import-order', [OrdersController::class, 'postImport'])->name('post-import-order');

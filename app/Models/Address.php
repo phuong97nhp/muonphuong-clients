@@ -17,8 +17,8 @@ class Address extends Model
      */
     protected $fillable = [
         'id',
-        'code_customer',
-        'name_address',
+        'code_customer_b2b',
+        'name_address_b2b',
         'address',
         'ward',
         'district',

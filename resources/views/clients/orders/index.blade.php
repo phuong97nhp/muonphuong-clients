@@ -96,12 +96,12 @@
                                     <i class="fas fa-search"></i> Tìm kiếm
                                 </button>
                             </div>
-                            <div class="form-group col-2">
+                            {{-- <div class="form-group col-2">
                                 <label class="label">&nbsp;</label>
                                 <button type="button" class="btn btn-sm btn-line" id="yeucauphat">
                                     <i class="fas fa-paper-plane"></i> Yêu cầu phát
                                 </button>
-                            </div>
+                            </div> --}}
                         </div>
                     </form>
                 </div>
@@ -126,8 +126,8 @@
                             <th>Số điện thoại</th>
                             <th>Số kiện</th>
                             <th>Trọng lượng</th>
-                            <th>Loại dịch vụ</th>
-                            <th>HTTT</th>
+                            {{-- <th>Loại dịch vụ</th>
+                            <th>HTTT</th> --}}
                             <th>Xã/phường</th>
                             <th>Quận/huyện</th>
                             <th>Tỉnh/thành phố</th>
@@ -147,8 +147,8 @@
                                     <td class="text-center">{{$item['phone_b2c']}}</td>
                                     <td class="text-center">{{$item['packages']}}</td>
                                     <td class="text-center">{{$item['weight']}} <sub>g</sub></td>
-                                    <td class="text-center">{{$item['type']}}</td>
-                                    <td class="text-center">{{$item['payments']}}</td>
+                                    {{-- <td class="text-center">{{$item['type']}}</td>
+                                    <td class="text-center">{{$item['payments']}}</td> --}}
                                     <td class="text-center">{{App\Library\Address\ReadAddress::getWard($item['ward'])}}</td>
                                     <td class="text-center">{{App\Library\Address\ReadAddress::getDistrict($item['district'])}}</td>
                                     <td class="text-center">{{App\Library\Address\ReadAddress::getCity($item['city'])}}</td>
@@ -172,8 +172,8 @@
                             <td>Số điện thoại</td>
                             <td>Số kiện</td>
                             <td>Trọng lượng</td>
-                            <td>Loại dịch vụ</td>
-                            <td>HTTT</td>
+                            {{-- <td>Loại dịch vụ</td>
+                            <td>HTTT</td> --}}
                             <td>Xã/phường</td>
                             <td>Quận/huyện</td>
                             <td>Tỉnh/tdành phố</td>

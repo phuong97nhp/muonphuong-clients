@@ -4,7 +4,8 @@ namespace App\Http\Controllers\clients;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Users;
+use App\Models\Address;
+use App\Models\User;
 use Auth;
 
 class UsersController extends Controller
@@ -22,6 +23,67 @@ class UsersController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function updateAddressId(Request $request)
+    {
+        try {
+            $intID = $request->id;
+
+            if(empty($intID)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Không được để trống địa chỉ cầm xóa.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            $intAddress = Address::where(['id' => $intID, 'is_deleted' => 0])->count();
+            if($intAddress != 1){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Địa chỉ không tồn tại.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+            
+            if(User::where(['id' => Auth::id()])->update(['address_id' => $intID])){
+                $arrReponse = [
+                    'success' => true,
+                    'code' => 200,
+                    'messenger' => 'Cập nhật địa chỉ thành công cho tài khoản.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }else{
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Cập nhật địa chỉ cho tài khoản không thành công.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+        } catch (\Throwable $th) {
+            $arrReponse = [
+                'success' => false,
+                'code' => 500,
+                'messenger' => 'Trạng thái truy cập đang bị lỗi.',
+                'data' => [],
+                'error' => []
+            ];
+            return response()->json($arrReponse, 200);
+        }
+
     }
 
     public function postLogin(Request $request){

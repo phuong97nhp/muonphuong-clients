@@ -100,7 +100,7 @@ class OrdersController extends Controller
 
             $serviveQueryOrder = Order::query(); 
 
-            $serviveQueryOrder->where('code_customer', 'BVIET');
+            $serviveQueryOrder->where('code_customer_b2b', 'BVIET');
             $serviveQueryOrder->where('is_deleted', 0);
 
             if (!empty($_GET['status'])) {
@@ -126,7 +126,7 @@ class OrdersController extends Controller
             foreach ($getListOrder as $key => $value) {
                 $arrData[] = [
                     'code' => $value['code_az'],
-                    'code_b2b' => $value['code_customer'], // mã đơn hàng của chính khách
+                    'code_b2b' => $value['code_customer_b2b'], // mã đơn hàng của chính khách
                     'code_b2c' => $value['code_b2c'], // mã đơn vận của khách hàng
                     'enter_date' => $value['enter_date'], // ngày cập nhật dữ liệu
                     'request_date' => $value['request_date'],

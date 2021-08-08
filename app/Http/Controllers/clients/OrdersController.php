@@ -13,6 +13,7 @@ use App\Models\Address;
 use App\Library\Address\ReadAddress;
 use App\Library\Payment\IntoMoney;
 use App\Models\Order;
+use App\Library\Pusher\MyEvent;
 use App\Library\General;
 
 class OrdersController extends Controller
@@ -20,9 +21,10 @@ class OrdersController extends Controller
     // 1. Chờ xữ lý, 2. Yêu Cầu phát, 3. Chờ phát, 4 Đã phát thành công, 5. Hoàn lại đơn hàng
     public function index (){
         $intLimit =  30;
-        $strCodeCustomer = Auth::user()["code_customer"];
-        $arrListAddress = Address::where('code_customer', $strCodeCustomer)->get();
+        $strCodeCustomer = Auth::user()["code_customer_b2b"];
+        $arrListAddress = Address::where('code_customer_b2b', $strCodeCustomer)->get();
         $arrData = [];
+        $arrData['address'] = [];
         if(!empty($arrListAddress)){
             foreach ($arrListAddress as $item) {
                 $strAddress = $item->address.', '.ReadAddress::getAddress([$item->ward, $item->district, $item->city], 'name_with_type').' - '.$item->phone;
@@ -86,11 +88,11 @@ class OrdersController extends Controller
             $serviveQueryOrder->where('address_id', $_GET['address_id']);
         }
 
-        $strCodeCustomer = Auth::user()["code_customer"];
-        $param['code_customer'] = '';
-        if (!empty($_GET['code_customer'])) {
-            $param['code_customer'] =  $_GET['code_customer'];
-            $serviveQueryOrder->where('code_customer', $strCodeCustomer);
+        $strCodeCustomer = Auth::user()["code_customer_b2b"];
+        $param['code_customer_b2b'] = '';
+        if (!empty($_GET['code_customer_b2b'])) {
+            $param['code_customer_b2b'] =  $_GET['code_customer_b2b'];
+            $serviveQueryOrder->where('code_customer_b2b', $strCodeCustomer);
         }
         
         $serviveQueryOrder->where('is_deleted', 0);
@@ -139,10 +141,10 @@ class OrdersController extends Controller
             ];
             return response()->json($arrReponse, 200);
         }
-        $strCodeCustomer = Auth::user()["code_customer"];
+        $strCodeCustomer = Auth::user()["code_customer_b2b"];
         $statusCheck = Order::where('status', 1)
                         ->where('is_deleted', 0)
-                        ->where('code_customer', $strCodeCustomer)
+                        ->where('code_customer_b2b', $strCodeCustomer)
                         ->update(['status' => 2]);
         if($statusCheck){
             $arrReponse = [
@@ -166,11 +168,13 @@ class OrdersController extends Controller
     }
     
     public function add(){
+        event(new MyEvent('Nguyễn HOàng Phương 1'));
         $intLimit =  30;
-        $strCodeCustomer = Auth::user()["code_customer"];
-        $arrListAddress = Address::where('code_customer', $strCodeCustomer)->get();
-        $arrListOrders = Order::where(['status' => 1, 'is_deleted' => 0, 'code_customer' => $strCodeCustomer])->paginate($intLimit);
+        $strCodeCustomer = Auth::user()["code_customer_b2b"];
+        $arrListAddress = Address::where('code_customer_b2b', $strCodeCustomer)->get();
+        $arrListOrders = Order::where(['status' => 1, 'is_deleted' => 0, 'code_customer_b2b' => $strCodeCustomer])->paginate($intLimit);
         $arrData = [];
+        $arrData['address'] = [];
         if(!empty($arrListAddress)){
             foreach ($arrListAddress as $item) {
                 $strAddress = $item->address.', '.ReadAddress::getAddress([$item->ward, $item->district, $item->city], 'name_with_type').' - '.$item->phone;
@@ -179,8 +183,219 @@ class OrdersController extends Controller
         }
         $arrData['orders'] = $arrListOrders;
 
+        $intAddressID = Auth::user()["address_id"];
+        $arrListAddress = Address::where('id', $intAddressID)->first();
+        $arrData['strAddress'] = $item->address.', '.ReadAddress::getAddress([$arrListAddress->ward, $arrListAddress->district, $arrListAddress->city], 'name_with_type');
+
         // phân trang
         return view('clients.orders.add')->with('arrData', $arrData);
+    }
+
+    public function postAddByMapAPI(Request $request){
+        set_time_limit(0);
+        // try {            
+            $intCity = empty($request->input('city'))?'':trim($request->input('city'));
+            $intDistrict = empty($request->input('district'))?'':trim($request->input('district'));
+            $intWard = empty($request->input('ward'))?'':trim($request->input('ward'));
+            $strAddress = empty($request->input('address'))?'':trim($request->input('address'));
+            $intWeight = empty($request->input('weight'))?'':trim($request->input('weight'));
+            $strFullNameB2C = empty($request->input('full_name_b2c'))?'':trim($request->input('full_name_b2c'));
+            $intPhoneB2C = empty($request->input('phone_b2c'))?'':trim($request->input('phone_b2c'));
+            $intCollectionMoney = empty($request->input('collection_money'))?'':trim($request->input('collection_money'));
+            $strCodeB2C = empty($request->input('code_b2c'))?'':trim($request->input('code_b2c'));
+            $intIntoMoney = empty($request->input('into_money'))?'':trim($request->input('into_money'));
+            $strContent = empty($request->input('content'))?'':trim($request->input('content'));
+
+            if(empty($intCity)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Cần phải chọn tỉnh/thành phố.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            if(empty($intDistrict)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Cần phải chọn quận/huyện.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            if(empty($intWard)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Cần phải chọn xã/phương.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            if(empty($strAddress)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Cần nhập vào địa chỉ.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            if(empty($intWeight)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Cần nhập vào trọng lượng.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            if(!is_numeric($intWeight)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Trọng lượng không hợp lệ.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            if(empty($strFullNameB2C)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Cần nhập vào tên người nhận.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            if(empty($intPhoneB2C)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Cận nhập vào số điện thoại người nhận.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            if(!is_numeric($intPhoneB2C)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Số điện thoại không hợp lệ cần nhập lại.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            if(empty($strCodeB2C)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Cập nhập vào mã hóa đơn phía khách hàng.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            if(!is_numeric($intIntoMoney) || $intIntoMoney <= 0 || empty($intIntoMoney)){
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Tổng cước tạm tính không hợp lệ.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+
+            $intCodeAz = Order::where(['is_deleted' => 0])->orderBy('id', 'desc')->first()['code_az'];
+            if(100000000 < $intCodeAz){
+                $intCodeAz++;
+            }else{
+                $intCodeAz = 100000000 + 1;
+            }
+
+            $arrData =  [
+                'code_az'          => (string) $intCodeAz,
+                'code_customer_b2b'    => (string) Auth::user()["code_customer_b2b"],
+                'code_b2b'         => (string) Auth::user()["code_customer_b2b"],
+                'code_b2c'         => $strCodeB2C,
+                'enter_date'       => date('Y-m-d H:i:s'),
+                'request_date'     => null,
+                'confrim_date'     => null,
+                'get_date'         => null,
+                'phone_b2c'        => (string) $intPhoneB2C,
+                'full_name_b2c'        => (string)$strFullNameB2C,
+                'code_product_b2b'     => null,
+                'address_b2c'          => (string) $strAddress,
+                'city'             => (string) $intCity,
+                'ward'             => (string) $intWard,
+                'district'         => (string) $intDistrict,
+                'weight'           => (int) $intWeight,
+                'total'            => null,
+                'packages'         => (int) 1,
+                'address_id'       => (int) Auth::user()["address_id"],
+                'collection_money' => (int) $intCollectionMoney,
+                'into_money'       => (int) $intIntoMoney,
+                'type'             => '',
+                'name_get'         => null,
+                'name_confrim'     => null,
+                'content'          => $strContent,
+                'is_deleted'       => 0,
+                'create_user'      => Auth::id(),
+                'status'           => 2,
+                'update_user'      => Auth::id(),
+                'created_at'       => date('Y-m-d H:i:s'),
+                'updated_at'       => null
+            ];
+            if(Order::insert($arrData)){
+                $arrReponse = [
+                    'success' => true,
+                    'code' => 200,
+                    'messenger' => 'Thêm đơn vận mới thành công.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }else {
+                $arrReponse = [
+                    'success' => false,
+                    'code' => 500,
+                    'messenger' => 'Thêm đơn vận mới không thành công.',
+                    'data' => [],
+                    'error' => []
+                ];
+                return response()->json($arrReponse, 200);
+            }
+        // } catch (\Throwable $th) {
+        //     $arrReponse = [
+        //         'success' => false,
+        //         'code' => 500,
+        //         'messenger' => 'Đã có lỗi xẫy ra.',
+        //         'data' => [],
+        //         'error' => []
+        //     ];
+        //     return response()->json($arrReponse, 200);
+        // }
     }
 
     public function postAdd(Request $request){
@@ -241,8 +456,8 @@ class OrdersController extends Controller
 
         $arrData =  [
             'code_az'          => (string) time(),
-            'code_customer'    => (string) Auth::user()["code_customer"],
-            'code_b2b'         => (string) Auth::user()["code_customer"],
+            'code_customer_b2b'    => (string) Auth::user()["code_customer_b2b"],
+            'code_b2b'         => (string) Auth::user()["code_customer_b2b"],
             'code_b2c'         => $strCodeB2C,
             'enter_date'       => date('Y-m-d H:i:s'),
             'request_date'     => null,
@@ -250,7 +465,7 @@ class OrdersController extends Controller
             'get_date'         => null,
             'phone_b2c'        => (string) $intPhoneB2C,
             'name_from'        => (string)$strFullNameB2C,
-            'code_product'     => null,
+            'code_product_b2b'     => null,
             'full_name_b2c'    => $strFullNameB2C,
             'address'          => (string) $strAddress,
             'city'             => (string) $intCity,
@@ -266,7 +481,6 @@ class OrdersController extends Controller
             'name_get'         => null,
             'name_confrim'     => null,
             'content'          => $strContent,
-            'status'           => 1,
             'is_deleted'       => 0,
             'create_user'      => Auth::id(),
             'update_user'      => Auth::id(),
@@ -327,8 +541,8 @@ class OrdersController extends Controller
 
         $arrData =  [
             'code_az'          => (string) time(),
-            'code_customer'    => (string) Auth::user()["code_customer"],
-            'code_b2b'         => (string) Auth::user()["code_customer"],
+            'code_customer_b2b'    => (string) Auth::user()["code_customer_b2b"],
+            'code_b2b'         => (string) Auth::user()["code_customer_b2b"],
             'code_b2c'         => $strCodeB2C,
             'enter_date'       => date('Y-m-d H:i:s'),
             'request_date'     => null,
@@ -336,7 +550,7 @@ class OrdersController extends Controller
             'get_date'         => null,
             'phone_b2c'        => (string) $intPhoneB2C,
             'name_from'        => (string)$strFullNameB2C,
-            'code_product'     => null,
+            'code_product_b2b'     => null,
             'full_name_b2c'    => $strFullNameB2C,
             'address'          => (string) $strAddress,
             'city'             => (string) $intCity,
